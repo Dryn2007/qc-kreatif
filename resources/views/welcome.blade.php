@@ -153,79 +153,61 @@
                             @foreach($items_minggu as $item)
                                 @php
                                     $colorOpts = [
-                                        'kosong' => 'bg-slate-800 text-slate-400 border-slate-700 focus:ring-slate-500',
-                                        'take' => 'bg-violet-900/30 text-violet-300 border-violet-700/50 focus:ring-violet-500',
-                                        'edit' => 'bg-amber-900/30 text-amber-300 border-amber-700/50 focus:ring-amber-500',
-                                        'acc' => 'bg-blue-900/30 text-blue-300 border-blue-700/50 focus:ring-blue-500',
-                                        'upload' => 'bg-emerald-900/30 text-emerald-300 border-emerald-700/50 focus:ring-emerald-500'
+                                        'kosong' => 'bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500',
+                                        'take' => 'bg-violet-900/30 text-violet-300 border-violet-700/50 hover:border-violet-500 shadow-[0_0_15px_rgba(139,92,246,0.15)]',
+                                        'revisi' => 'bg-amber-900/30 text-amber-300 border-amber-700/50 hover:border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.15)]',
+                                        'proses_edit' => 'bg-blue-900/30 text-blue-300 border-blue-700/50 hover:border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.15)]',
+                                        'acc' => 'bg-emerald-900/30 text-emerald-300 border-emerald-700/50 hover:border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.15)]',
+                                        'ga_acc' => 'bg-rose-900/30 text-rose-300 border-rose-700/50 hover:border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.15)]',
+                                        'done_upload' => 'bg-indigo-900/30 text-indigo-300 border-indigo-700/50 hover:border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.2)]'
                                     ];
-                                    $selectColor = $colorOpts[$item->status] ?? $colorOpts['kosong'];
-                                    $cardGlow = '';
-                                    if ($item->status == 'upload')
-                                        $cardGlow = 'hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] glow-emerald';
-                                    elseif ($item->status == 'acc')
-                                        $cardGlow = 'hover:border-blue-500/40 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]';
-                                    elseif ($item->status == 'edit')
-                                        $cardGlow = 'hover:border-amber-500/40 hover:shadow-[0_0_15px_rgba(245,158,11,0.15)]';
-                                    elseif ($item->status == 'take')
-                                        $cardGlow = 'hover:border-violet-500/40 hover:shadow-[0_0_15px_rgba(139,92,246,0.15)]';
-                                    else
-                                        $cardGlow = 'hover:border-indigo-500/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)]';
+                                    $cardColor = $colorOpts[$item->status] ?? $colorOpts['kosong'];
                                 @endphp
 
-                                <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 transition-all duration-300 cursor-pointer group {{ $cardGlow }} relative overflow-hidden"
-                                    onclick="openModal(this)" data-id="{{ $item->id }}" data-klien="{{ $item->klien }}"
-                                    data-pilar="{{ $item->pilar_konten }}" data-script="{{ $item->script_video }}"
-                                    data-caption="{{ $item->caption }}" data-linkref="{{ $item->link_referensi }}"
-                                    data-linkdrive="{{ $item->link_gdrive }}">
+                                <div class="p-4 rounded-xl border transition-all duration-300 cursor-pointer group {{ $cardColor }} relative overflow-hidden" onclick="openModal(this)" data-id="{{ $item->id }}" data-klien="{{ $item->klien }}" data-pilar="{{ $item->pilar_konten }}" data-status="{{ $item->status }}" data-script="{{ $item->script_video }}" data-caption="{{ $item->caption }}" data-linkref="{{ $item->link_referensi }}" data-linkdrive="{{ $item->link_gdrive }}">
                                     <!-- Ribbon Hari -->
-                                    <div
-                                        class="absolute top-0 left-0 w-1 h-full bg-slate-700 group-hover:bg-indigo-500 transition-colors">
-                                    </div>
+                                    <div class="absolute top-0 left-0 w-1 h-full bg-slate-700 group-hover:bg-indigo-500 transition-colors"></div>
 
                                     <div class="flex justify-between items-center mb-3">
                                         <div class="flex flex-col">
-                                            <span class="font-bold text-slate-300 text-sm tracking-wide">{{ $item->hari }}</span>
+                                            <span class="font-bold text-slate-100 text-sm tracking-wide">{{ $item->hari }}</span>
                                             @if($item->tanggal)
-                                                <span class="text-[10px] text-slate-500 tracking-wider">
+                                                <span class="text-[10px] text-slate-400 tracking-wider">
                                                     {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}
                                                 </span>
                                             @endif
                                         </div>
 
-                                        <form action="{{ route('update.status', $item->id) }}" method="POST"
-                                            onclick="event.stopPropagation()">
-                                            @csrf @method('PUT')
-                                            <select name="status" onchange="this.form.submit()"
-                                                class="text-[10px] sm:text-xs px-2 py-1 rounded-md font-bold cursor-pointer outline-none border {{ $selectColor }} appearance-none text-center">
-                                                <option value="kosong" {{ $item->status == 'kosong' ? 'selected' : '' }}>⏳ KOSONG
-                                                </option>
-                                                <option value="take" {{ $item->status == 'take' ? 'selected' : '' }}>🎥 TAKE</option>
-                                                <option value="edit" {{ $item->status == 'edit' ? 'selected' : '' }}>✂️ EDIT</option>
-                                                <option value="acc" {{ $item->status == 'acc' ? 'selected' : '' }}>⭐ ACC</option>
-                                                <option value="upload" {{ $item->status == 'upload' ? 'selected' : '' }}>🚀 UPLOAD
-                                                </option>
-                                            </select>
-                                        </form>
+                                        @php
+                                            $statusNames = [
+                                                'kosong' => '⏳ KOSONG',
+                                                'take' => '🎥 TAKE',
+                                                'revisi' => '🔄 REVISI',
+                                                'proses_edit' => '✂️ PROSES EDIT',
+                                                'acc' => '⭐ ACC',
+                                                'ga_acc' => '❌ GA ACC',
+                                                'done_upload' => '🚀 DONE UPLOAD'
+                                            ];
+                                        @endphp
+                                        <span class="text-[10px] sm:text-xs px-2 py-1 rounded-md font-bold text-center border-b border-transparent">
+                                            {{ $statusNames[$item->status] ?? '⏳ KOSONG' }}
+                                        </span>
                                     </div>
 
                                     <div class="bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/80">
-                                        <p class="text-xs sm:text-sm text-slate-300 font-medium truncate">
-                                            <span class="text-indigo-400 mr-1 font-bold">#</span>{{ $item->pilar_konten }}
+                                        <p class="text-xs sm:text-sm text-slate-200 font-bold truncate">
+                                            <span class="opacity-50 mr-1">Tugas:</span> {{ $item->pilar_konten }}
                                         </p>
                                     </div>
 
-                                    <div
-                                        class="mt-3 flex justify-between items-center opacity-70 group-hover:opacity-100 transition-opacity">
+                                    <div class="mt-3 flex justify-between items-center opacity-70 group-hover:opacity-100 transition-opacity">
                                         <div class="flex gap-2">
                                             @if($item->script_video)<span title="Script" class="text-xs">📄</span>@endif
                                             @if($item->caption)<span title="Caption" class="text-xs">💬</span>@endif
                                             @if($item->link_referensi)<span title="Referensi" class="text-xs">🔗</span>@endif
                                             @if($item->link_gdrive)<span title="Drive" class="text-xs">📁</span>@endif
                                         </div>
-                                        <span
-                                            class="text-[10px] text-fuchsia-400 font-bold bg-fuchsia-500/10 px-2 py-1 rounded-md border border-fuchsia-500/20">Edit
-                                            Detail ↗</span>
+                                        <span class="text-[10px] uppercase font-bold px-2 py-1 rounded-md bg-white/10 hover:bg-white/20 transition">Edit ↗</span>
                                     </div>
                                 </div>
                             @endforeach
@@ -321,25 +303,16 @@
     <!-- Edit Detail Modal -->
     <div id="detailModal"
         class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 invisible opacity-0 transition-all duration-300 flex items-center justify-center p-4">
-        <div class="bg-slate-900 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-slate-700 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative transform scale-95 transition-transform duration-300"
-            id="modalContent">
+        <div class="bg-slate-900 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-slate-700 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative transform scale-95 transition-transform duration-300" id="modalContent">
 
-            <div
-                class="sticky top-0 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-5 sm:p-6 flex justify-between items-center z-10">
+            <div class="sticky top-0 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-5 sm:p-6 flex justify-between items-center z-10">
                 <div>
                     <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
-                        <span id="modalKlien"
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400"></span>
+                        Client: <span id="modalKlien" class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400"></span>
                     </h2>
-                    <p class="text-slate-400 text-sm font-medium mt-1">Pilar: <span id="modalPilar"
-                            class="text-slate-300 font-bold"></span></p>
                 </div>
-                <button onclick="closeModal()"
-                    class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
+                <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
 
@@ -347,17 +320,33 @@
                 <form id="formDetail" method="POST" class="space-y-5">
                     @csrf @method('PUT')
 
-                    <div class="group">
-                        <label class="block text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">📝 Script
-                            Video / Voice Over</label>
-                        <textarea id="modalScript" name="script_video" rows="4"
-                            class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder-slate-600 resize-none"
-                            placeholder="Ketik script di sini..."></textarea>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="group">
+                            <label class="block text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-2">📌 Nama Konten Pilar</label>
+                            <input type="text" id="modalPilarInput" name="pilar_konten" required class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-all placeholder-slate-600 font-bold">
+                        </div>
+
+                        <div class="group">
+                            <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">📊 Status Pengerjaan</label>
+                            <select id="modalStatusSelect" name="status" class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-bold appearance-none cursor-pointer">
+                                <option value="kosong">⏳ KOSONG</option>
+                                <option value="take">🎥 TAKE</option>
+                                <option value="revisi">🔄 REVISI</option>
+                                <option value="proses_edit">✂️ PROSES EDIT</option>
+                                <option value="acc">⭐ ACC</option>
+                                <option value="ga_acc">❌ GA ACC</option>
+                                <option value="done_upload">🚀 DONE UPLOAD</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="group border-t border-slate-800 pt-5 mt-2">
+                        <label class="block text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">📄 Script Video / Voice Over</label>
+                        <textarea id="modalScript" name="script_video" rows="2" class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder-slate-600 resize-none" placeholder="Ketik script di sini..."></textarea>
                     </div>
 
                     <div class="group">
-                        <label class="block text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-2">#️⃣
-                            Caption & Hashtag</label>
+                        <label class="block text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-2">#️⃣ Caption & Hashtag</label>
                         <textarea id="modalCaption" name="caption" rows="3"
                             class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-all placeholder-slate-600 resize-none"
                             placeholder="Tulis caption dan hashtag di sini..."></textarea>
@@ -365,31 +354,22 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">🔗 Link
-                                Tiktok/Reels</label>
-                            <input type="url" id="modalLinkRef" name="link_referensi"
-                                class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-slate-600"
-                                placeholder="https://...">
+                            <label class="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">🔗 Link Tiktok/Reels</label>
+                            <input type="url" id="modalLinkRef" name="link_referensi" class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-slate-600" placeholder="https://...">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">📁
-                                Link GDrive</label>
-                            <input type="url" id="modalLinkDrive" name="link_gdrive"
-                                class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-slate-600"
-                                placeholder="https://drive.google.com/...">
+                            <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">📁 Link GDrive</label>
+                            <input type="url" id="modalLinkDrive" name="link_gdrive" class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-slate-600" placeholder="https://drive.google.com/...">
                         </div>
                     </div>
 
-                    <div class="pt-6 mt-4 border-t border-slate-800 flex justify-end gap-3">
-                        <button type="button" onclick="closeModal()"
-                            class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition">Batal</button>
-                        <button type="submit"
-                            class="px-8 py-2.5 bg-gradient-to-r from-indigo-600 to-fuchsia-600 hover:from-indigo-500 hover:to-fuchsia-500 text-white rounded-xl font-bold shadow-[0_0_20px_rgba(99,102,241,0.3)] transition transform hover:scale-105">Simpan
-                            Data</button>
+                    <div class="pt-6 mt-4 border-t border-slate-800 flex justify-end gap-3 z-20">
+                        <button type="button" onclick="closeModal()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition">Batal</button>
+                        <button type="submit" class="px-8 py-2.5 bg-gradient-to-r from-indigo-600 to-fuchsia-600 hover:from-indigo-500 hover:to-fuchsia-500 text-white rounded-xl font-bold shadow-[0_0_20px_rgba(99,102,241,0.3)] transition transform hover:scale-105">Simpan Data</button>
                     </div>
                 </form>
 
-                <div class="mt-8 relative">
+                <div class="mt-8 relative z-10">
                     <div class="absolute inset-0 flex items-center" aria-hidden="true">
                         <div class="w-full border-t border-red-900/30"></div>
                     </div>
@@ -511,18 +491,20 @@
 
                     let cards = week.querySelectorAll('.group');
                     cards.forEach(card => {
-                        let hariEl = card.querySelector('.font-bold.text-slate-300');
+                        let hariEl = card.querySelector('.font-bold.text-slate-100');
                         let pilarEl = card.querySelector('p.truncate');
                         if (!hariEl || !pilarEl) return;
 
                         let hari = hariEl.innerText.trim();
-                        let pilar = pilarEl.innerText.replace('#', '').trim();
-                        let val = card.querySelector('select').value;
+                        let pilar = pilarEl.innerText.replace('Tugas:', '').trim();
+                        let val = card.getAttribute('data-status');
 
                         let emoji = "⏳";
-                        if (val == 'upload') emoji = "🚀";
+                        if (val == 'done_upload') emoji = "🚀";
                         else if (val == 'acc') emoji = "⭐";
-                        else if (val == 'edit') emoji = "✂️";
+                        else if (val == 'ga_acc') emoji = "❌";
+                        else if (val == 'proses_edit') emoji = "✂️";
+                        else if (val == 'revisi') emoji = "🔄";
                         else if (val == 'take') emoji = "🎥";
 
                         laporan += `    - ${hari} : ${pilar} ${emoji}\n`;
@@ -567,7 +549,8 @@
             let id = element.getAttribute('data-id');
 
             document.getElementById('modalKlien').innerText = element.getAttribute('data-klien');
-            document.getElementById('modalPilar').innerText = element.getAttribute('data-pilar');
+            document.getElementById('modalPilarInput').value = element.getAttribute('data-pilar');
+            document.getElementById('modalStatusSelect').value = element.getAttribute('data-status');
             document.getElementById('modalScript').value = element.getAttribute('data-script') || '';
             document.getElementById('modalCaption').value = element.getAttribute('data-caption') || '';
             document.getElementById('modalLinkRef').value = element.getAttribute('data-linkref') || '';

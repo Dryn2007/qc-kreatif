@@ -74,6 +74,8 @@ class ContentController extends Controller
     {
         $content = Content::findOrFail($id);
         $content->update([
+            'pilar_konten' => $request->pilar_konten,
+            'status' => $request->status,
             'script_video' => $request->script_video,
             'caption' => $request->caption,
             'link_referensi' => $request->link_referensi,
