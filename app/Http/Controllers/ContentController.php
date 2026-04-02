@@ -73,16 +73,20 @@ class ContentController extends Controller
     public function updateDetail(Request $request, $id)
     {
         $content = Content::findOrFail($id);
+
+        $request->validate([
+            'pilar_konten' => 'required',
+            'status' => 'required',
+            'link_referensi' => $request->status == 'done_upload' ? 'required|url' : 'nullable|url',
+        ]);
+
         $content->update([
             'pilar_konten' => $request->pilar_konten,
             'status' => $request->status,
-            'script_video' => $request->script_video,
-            'caption' => $request->caption,
             'link_referensi' => $request->link_referensi,
-            'link_gdrive' => $request->link_gdrive,
         ]);
 
-        return back()->with('success', 'Detail berhasil disimpan!');
+        return back()->with('success', 'Detail konten berhasil diperbarui');
     }
 
     public function destroy($id)

@@ -164,7 +164,7 @@
                                     $cardColor = $colorOpts[$item->status] ?? $colorOpts['kosong'];
                                 @endphp
 
-                                <div class="p-4 rounded-xl border transition-all duration-300 cursor-pointer group {{ $cardColor }} relative overflow-hidden" onclick="openModal(this)" data-id="{{ $item->id }}" data-klien="{{ $item->klien }}" data-pilar="{{ $item->pilar_konten }}" data-status="{{ $item->status }}" data-script="{{ $item->script_video }}" data-caption="{{ $item->caption }}" data-linkref="{{ $item->link_referensi }}" data-linkdrive="{{ $item->link_gdrive }}">
+                                <div class="p-4 rounded-xl border transition-all duration-300 cursor-pointer group {{ $cardColor }} relative overflow-hidden" onclick="openModal(this)" data-id="{{ $item->id }}" data-klien="{{ $item->klien }}" data-pilar="{{ $item->pilar_konten }}" data-status="{{ $item->status }}" data-linkref="{{ $item->link_referensi }}">
                                     <!-- Ribbon Hari -->
                                     <div class="absolute top-0 left-0 w-1 h-full bg-slate-700 group-hover:bg-indigo-500 transition-colors"></div>
 
@@ -206,7 +206,7 @@
                                                 <div class="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
                                             </div>
                                             <img src="" class="w-full h-32 object-cover opacity-0 transition-opacity duration-500 tiktok-img" alt="Tiktok Thumbnail">
-                                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">       
                                                 <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30">
                                                     <span class="text-white ml-1">▶</span>
                                                 </div>
@@ -216,10 +216,7 @@
 
                                     <div class="mt-3 flex justify-between items-center opacity-70 group-hover:opacity-100 transition-opacity">
                                         <div class="flex gap-2">
-                                            @if($item->script_video)<span title="Script" class="text-xs">📄</span>@endif
-                                            @if($item->caption)<span title="Caption" class="text-xs">💬</span>@endif
-                                            @if($item->link_referensi)<span title="Referensi" class="text-xs">🔗</span>@endif
-                                            @if($item->link_gdrive)<span title="Drive" class="text-xs">📁</span>@endif
+                                            @if($item->link_referensi)<span title="Referensi TikTok" class="text-xs">🔗</span>@endif
                                         </div>
                                         <span class="text-[10px] uppercase font-bold px-2 py-1 rounded-md bg-white/10 hover:bg-white/20 transition">Edit ↗</span>
                                     </div>
@@ -354,27 +351,9 @@
                         </div>
                     </div>
 
-                    <div class="group border-t border-slate-800 pt-5 mt-2">
-                        <label class="block text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">📄 Script Video / Voice Over</label>
-                        <textarea id="modalScript" name="script_video" rows="2" class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder-slate-600 resize-none" placeholder="Ketik script di sini..."></textarea>
-                    </div>
-
-                    <div class="group">
-                        <label class="block text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-2">#️⃣ Caption & Hashtag</label>
-                        <textarea id="modalCaption" name="caption" rows="3"
-                            class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-all placeholder-slate-600 resize-none"
-                            placeholder="Tulis caption dan hashtag di sini..."></textarea>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">🔗 Link Tiktok/Reels</label>
-                            <input type="url" id="modalLinkRef" name="link_referensi" class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-slate-600" placeholder="https://...">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">📁 Link GDrive</label>
-                            <input type="url" id="modalLinkDrive" name="link_gdrive" class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-slate-600" placeholder="https://drive.google.com/...">
-                        </div>
+                    <div class="group mt-5">
+                        <label class="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">🔗 Link Tiktok/Reels</label>
+                        <input type="url" id="modalLinkRef" name="link_referensi" class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-slate-600" placeholder="https://...">
                     </div>
 
                     <div class="pt-6 mt-4 border-t border-slate-800 flex justify-end gap-3 z-20">
@@ -595,10 +574,7 @@
             document.getElementById('modalKlien').innerText = element.getAttribute('data-klien');
             document.getElementById('modalPilarInput').value = element.getAttribute('data-pilar');
             document.getElementById('modalStatusSelect').value = element.getAttribute('data-status');
-            document.getElementById('modalScript').value = element.getAttribute('data-script') || '';
-            document.getElementById('modalCaption').value = element.getAttribute('data-caption') || '';
             document.getElementById('modalLinkRef').value = element.getAttribute('data-linkref') || '';
-            document.getElementById('modalLinkDrive').value = element.getAttribute('data-linkdrive') || '';
 
             document.getElementById('formDetail').action = `/update-detail/${id}`;
             document.getElementById('formHapus').action = `/hapus-jadwal/${id}`;
