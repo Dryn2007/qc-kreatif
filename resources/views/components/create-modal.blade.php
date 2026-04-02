@@ -6,7 +6,7 @@
         <div
             class="sticky top-0 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-5 sm:p-6 flex justify-between items-center z-10">
             <div>
-                <h2 class="text-2xl font-extrabold text-white">âœ✨ Jadwal <span
+                <h2 class="text-2xl font-extrabold text-white">Tambah Jadwal <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400">Baru</span>
                 </h2>
                 <p class="text-slate-400 text-sm font-medium mt-1">Tambahkan task ke board creative QC.</p>
@@ -72,9 +72,9 @@
 
                     <!-- Tanggal (Date) -->
                     <div>
-                        <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">🗓️
+                        <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">📅
                             Tanggal</label>
-                        <input type="date" name="tanggal" required
+                        <input type="date" name="tanggal" id="createTanggal" required
                             class="w-full bg-slate-800/60 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-bold">
                     </div>
 
@@ -82,9 +82,10 @@
                     <div class="md:col-span-2">
                         <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">📆 Hari
                             Target</label>
-                        <select name="hari" required
-                            class="w-full bg-slate-800/60 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-bold appearance-none cursor-pointer">
-                            <option value="" disabled selected>-- Pilih Hari --</option>
+                        <select name="hari" id="createHari" required
+                            class="w-full bg-slate-800/60 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all font-bold appearance-none cursor-pointer bg-slate-700/30"
+                            readonly tabindex="-1" style="pointer-events: none;">
+                            <option value="" disabled selected>-- Pilih Hari (Otomatis) --</option>
                             <option value="Senin">Senin</option>
                             <option value="Selasa">Selasa</option>
                             <option value="Rabu">Rabu</option>
@@ -109,6 +110,22 @@
 </div>
 
 <script>
+    document.getElementById('createTanggal').addEventListener('change', function () {
+        const val = this.value; // YYYY-MM-DD
+        if (val) {
+            const parts = val.split('-');
+            const year = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1;
+            const day = parseInt(parts[2], 10);
+            const dateObj = new Date(year, month, day);
+            const daysNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const targetDay = daysNames[dateObj.getDay()];
+            document.getElementById('createHari').value = targetDay;
+        } else {
+            document.getElementById('createHari').value = '';
+        }
+    });
+
     function showCreateModal(klien = '', minggu = '') {
         const modal = document.getElementById('createModal');
         const content = document.getElementById('createModalContent');
