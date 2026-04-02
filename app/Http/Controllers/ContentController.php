@@ -139,9 +139,9 @@ class ContentController extends Controller
         $lines = preg_split('/\r\n|\n|\r/', $text);
         $daysMap = ['SENIN' => 'Senin', 'SELASA' => 'Selasa', 'RABU' => 'Rabu', 'KAMIS' => 'Kamis', 'JUMAT' => 'Jumat', 'SABTU' => 'Sabtu', 'MINGGU' => 'Minggu'];
         $currentDay = null;
-        $created = 0;
         $minggu = $request->input('minggu', 'Minggu 1');
 
+        $parsed = [];
         foreach ($lines as $line) {
             $line = trim($line);
             if ($line === '') continue;
@@ -159,22 +159,54 @@ class ContentController extends Controller
                 $value = trim($m[2]);
 
                 // Remove common emoji markers and checkmarks
-                $value = preg_replace('/[✅✔✖❌❗❓\x{1F600}-\x{1F6FF}]/u', '', $value);
+                $value = preg_replace('/[✅✔✖❌❗❓\\x{1F600}-\\x{1F6FF}]/u', '', $value);
                 $value = trim($value);
 
                 if ($currentDay) {
-                    Content::create([
+                    $parsed[] = [
                         'klien' => $key,
                         'hari' => $currentDay,
                         'minggu' => $minggu,
                         'pilar_konten' => $value,
                         'status' => 'kosong'
-                    ]);
-                    $created++;
+                    ];
                 }
             }
         }
 
-        return redirect('/')->with('success', "Upload selesai. $created entri dibuat untuk $minggu.");
+        if (empty($parsed)) {
+            return back()->with('error', 'Tidak ditemukan entri yang dapat diparsing.');
+        }
+
+        // Simpan hasil parse sementara di session untuk preview
+        session(['ocr_parsed' => $parsed]);
+
+        return view('upload_preview', ['parsed' => $parsed, 'minggu' => $minggu, 'imagePath' => $path]);
+    }
+
+    // Simpan entri yang dipilih dari preview
+    public function processSave(Request $request)
+    {
+        $parsed = session('ocr_parsed', []);
+        if (empty($parsed)) {
+            return redirect()->route('upload.form')->with('error', 'Tidak ada data hasil OCR untuk disimpan.');
+        }
+
+        $selected = $request->input('selected', []); // array of indexes
+        $saved = 0;
+
+        foreach ($parsed as $idx => $entry) {
+            if (!empty($selected) && !in_array((string)$idx, $selected)) {
+                continue; // skip unchecked
+            }
+
+            Content::create($entry);
+            $saved++;
+        }
+
+        // Clear session parsed data
+        session()->forget('ocr_parsed');
+
+        return redirect('/')->with('success', "Selesai: $saved entri disimpan.");
     }
 }

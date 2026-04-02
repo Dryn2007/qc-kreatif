@@ -25,3 +25,4 @@ Route::delete('/hapus-jadwal/{id}', [ContentController::class, 'destroy'])->name
 // Upload jadwal dari screenshot (OCR)
 Route::get('/upload-jadwal', [ContentController::class, 'showUploadForm'])->name('upload.form');
 Route::post('/upload-jadwal', [ContentController::class, 'processUpload'])->name('upload.process');
+Route::post('/upload-jadwal/save', [ContentController::class, 'processSave'])->name('upload.save');
