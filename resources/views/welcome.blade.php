@@ -73,109 +73,130 @@
                             <a href="{{ route('jadwal.create') }}" class="group relative px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl font-semibold shadow-[0_0_20px_rgba(79,70,229,0.3)] transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-indigo-400/20 hover:scale-105">
                                 <span class="text-lg">✨</span> + Jadwal
                             </a>
-                            <a href="{{ route('export.excel', ['minggu' => $minggu_aktif]) }}" class="group relative px-4 py-2.5 bg-indigo-900/30 hover:bg-indigo-800/40 text-indigo-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-indigo-500/20 hover:border-indigo-400/50">
+                            <a href="{{ route('export.excel') }}" class="group relative px-4 py-2.5 bg-indigo-900/30 hover:bg-indigo-800/40 text-indigo-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-indigo-500/20 hover:border-indigo-400/50">
                                 <span class="text-lg">📊</span> Excel
                             </a>
-                            <a href="{{ route('export.pdf', ['minggu' => $minggu_aktif]) }}" class="group relative px-4 py-2.5 bg-fuchsia-900/30 hover:bg-fuchsia-800/40 text-fuchsia-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-fuchsia-500/20 hover:border-fuchsia-400/50">
+                            <a href="{{ route('export.pdf') }}" class="group relative px-4 py-2.5 bg-fuchsia-900/30 hover:bg-fuchsia-800/40 text-fuchsia-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-fuchsia-500/20 hover:border-fuchsia-400/50">
                                 <span class="text-lg">📄</span> PDF
                             </a>
                         </div>
-                    </div>
-
-                    <!-- Minggu Filter -->
-                    <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide py-1">
-                        @foreach(['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'] as $m)
-                            <a href="/?minggu={{ $m }}" 
-                               class="px-5 py-2.5 font-bold text-xs sm:text-sm rounded-xl transition-all duration-300 whitespace-nowrap backdrop-blur-sm border 
-                               {{ $minggu_aktif == $m ? 'bg-indigo-600/20 border-indigo-500/50 text-indigo-300 shadow-[0_0_15px_rgba(99,102,241,0.2)]' : 'bg-slate-800/40 border-slate-700/50 text-slate-400 hover:bg-slate-700/50 hover:text-slate-200' }}">
-                                {{ $m }}
-                            </a>
-                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Main Kanban Board -->
-        <div class="flex overflow-x-auto gap-5 pb-8 snap-x snap-mandatory">
-            @forelse($contents as $hari => $items)
-                <div class="glass-card rounded-2xl p-4 sm:p-5 w-full sm:w-[360px] sm:min-w-[360px] flex-shrink-0 snap-start flex flex-col max-h-[750px]">
-                    <div class="flex items-center justify-between border-b border-slate-700/50 pb-4 mb-4">
-                        <h2 class="text-lg font-bold text-slate-200 uppercase tracking-widest flex items-center gap-2">
-                            <span class="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
-                            {{ $hari }}
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 pb-8">
+            @forelse($contents as $klien => $items_klien)
+                <!-- Kotak BIG Laporan Per Klien -->
+                <div class="glass-card rounded-3xl p-5 sm:p-7 w-full flex flex-col relative border border-slate-700/50 shadow-2xl">
+                    
+                    <!-- Header Klien -->
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-indigo-500/30 pb-4 mb-6 relative">
+                        <div class="absolute -top-4 -left-4 w-20 h-20 bg-indigo-600/10 rounded-full blur-2xl pointer-events-none"></div>
+                        <h2 class="text-2xl font-extrabold text-white tracking-wide flex items-center gap-3">
+                            <span class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-fuchsia-500 rounded-xl flex items-center justify-center text-xl shadow-[0_0_15px_rgba(99,102,241,0.4)]">🚀</span>
+                            {{ $klien }}
                         </h2>
-                        <span class="bg-slate-800 text-xs font-bold text-slate-400 px-2.5 py-1 rounded-lg">{{ count($items) }} cards</span>
+                        <span class="mt-3 sm:mt-0 bg-slate-800/80 text-xs font-bold text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700/50">
+                            Total: {{ count($items_klien) }} Task
+                        </span>
                     </div>
 
-                    <div class="space-y-4 overflow-y-auto pr-1 custom-scrollbar">
-                        @foreach($items as $item)
-                            @php
-                                $colorOpts = [
-                                    'kosong' => 'bg-slate-800 text-slate-400 border-slate-700 focus:ring-slate-500',
-                                    'take'   => 'bg-violet-900/30 text-violet-300 border-violet-700/50 focus:ring-violet-500',
-                                    'edit'   => 'bg-amber-900/30 text-amber-300 border-amber-700/50 focus:ring-amber-500',
-                                    'acc'    => 'bg-blue-900/30 text-blue-300 border-blue-700/50 focus:ring-blue-500',
-                                    'upload' => 'bg-emerald-900/30 text-emerald-300 border-emerald-700/50 focus:ring-emerald-500'
-                                ];
-                                $selectColor = $colorOpts[$item->status] ?? $colorOpts['kosong'];
+                    <!-- Sortir Mingguan Di Dalam Klien -->
+                    <div class="space-y-6">
+                        @php
+                            $grouped_minggu = $items_klien->groupBy('minggu');
+                        @endphp
+                        
+                        @foreach($grouped_minggu as $minggu_name => $items_minggu)
+                            <div class="bg-slate-900/50 rounded-2xl p-4 border border-slate-700/40">
                                 
-                                $cardGlow = '';
-                                if ($item->status == 'upload') $cardGlow = 'hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] glow-emerald';
-                                elseif ($item->status == 'acc') $cardGlow = 'hover:border-blue-500/40 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]';
-                                elseif ($item->status == 'edit') $cardGlow = 'hover:border-amber-500/40 hover:shadow-[0_0_15px_rgba(245,158,11,0.15)]';
-                                elseif ($item->status == 'take') $cardGlow = 'hover:border-violet-500/40 hover:shadow-[0_0_15px_rgba(139,92,246,0.15)]';
-                                else $cardGlow = 'hover:border-indigo-500/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)]';
-                            @endphp
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="h-px bg-slate-700 flex-grow"></div>
+                                    <span class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest bg-slate-900/80 px-4 py-1 rounded-full border border-fuchsia-500/20">
+                                        {{ $minggu_name }}
+                                    </span>
+                                    <div class="h-px bg-slate-700 flex-grow"></div>
+                                </div>
 
-                            <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 transition-all duration-300 cursor-pointer group {{ $cardGlow }}"
-                                onclick="openModal(this)" data-id="{{ $item->id }}" data-klien="{{ $item->klien }}"
-                                data-pilar="{{ $item->pilar_konten }}" data-script="{{ $item->script_video }}"
-                                data-caption="{{ $item->caption }}" data-linkref="{{ $item->link_referensi }}"
-                                data-linkdrive="{{ $item->link_gdrive }}">
+                                <!-- Cards Container for This Week -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    @foreach($items_minggu as $item)
+                                        @php
+                                            $colorOpts = [
+                                                'kosong' => 'bg-slate-800 text-slate-400 border-slate-700 focus:ring-slate-500',
+                                                'take'   => 'bg-violet-900/30 text-violet-300 border-violet-700/50 focus:ring-violet-500',
+                                                'edit'   => 'bg-amber-900/30 text-amber-300 border-amber-700/50 focus:ring-amber-500',
+                                                'acc'    => 'bg-blue-900/30 text-blue-300 border-blue-700/50 focus:ring-blue-500',
+                                                'upload' => 'bg-emerald-900/30 text-emerald-300 border-emerald-700/50 focus:ring-emerald-500'
+                                            ];
+                                            $selectColor = $colorOpts[$item->status] ?? $colorOpts['kosong'];
+                                            
+                                            $cardGlow = '';
+                                            if ($item->status == 'upload') $cardGlow = 'hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] glow-emerald';
+                                            elseif ($item->status == 'acc') $cardGlow = 'hover:border-blue-500/40 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]';
+                                            elseif ($item->status == 'edit') $cardGlow = 'hover:border-amber-500/40 hover:shadow-[0_0_15px_rgba(245,158,11,0.15)]';
+                                            elseif ($item->status == 'take') $cardGlow = 'hover:border-violet-500/40 hover:shadow-[0_0_15px_rgba(139,92,246,0.15)]';
+                                            else $cardGlow = 'hover:border-indigo-500/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)]';
+                                        @endphp
 
-                                <div class="flex justify-between items-center mb-3">
-                                    <span class="font-extrabold text-white text-base tracking-wide">{{ $item->klien }}</span>
-                                    
-                                    <form action="{{ route('update.status', $item->id) }}" method="POST" onclick="event.stopPropagation()">
-                                        @csrf @method('PUT')
-                                        <select name="status" onchange="this.form.submit()"
-                                            class="text-[10px] sm:text-xs px-2.5 py-1.5 rounded-lg font-bold cursor-pointer outline-none border {{ $selectColor }} appearance-none text-center">
-                                            <option value="kosong" {{ $item->status == 'kosong' ? 'selected' : '' }}>⏳ KOSONG</option>
-                                            <option value="take" {{ $item->status == 'take' ? 'selected' : '' }}>🎥 TAKE</option>
-                                            <option value="edit" {{ $item->status == 'edit' ? 'selected' : '' }}>✂️ EDIT</option>
-                                            <option value="acc" {{ $item->status == 'acc' ? 'selected' : '' }}>⭐ ACC</option>
-                                            <option value="upload" {{ $item->status == 'upload' ? 'selected' : '' }}>🚀 UPLOAD</option>
-                                        </select>
-                                    </form>
+                                        <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 transition-all duration-300 cursor-pointer group {{ $cardGlow }} relative overflow-hidden"
+                                            onclick="openModal(this)" data-id="{{ $item->id }}" data-klien="{{ $item->klien }}"
+                                            data-pilar="{{ $item->pilar_konten }}" data-script="{{ $item->script_video }}"
+                                            data-caption="{{ $item->caption }}" data-linkref="{{ $item->link_referensi }}"
+                                            data-linkdrive="{{ $item->link_gdrive }}">
+                                            
+                                            <!-- Ribbon Hari -->
+                                            <div class="absolute top-0 left-0 w-1 h-full bg-slate-700 group-hover:bg-indigo-500 transition-colors"></div>
+
+                                            <div class="flex justify-between items-center mb-3">
+                                                <span class="font-bold text-slate-300 text-sm tracking-wide">{{ $item->hari }}</span>
+                                                
+                                                <form action="{{ route('update.status', $item->id) }}" method="POST" onclick="event.stopPropagation()">
+                                                    @csrf @method('PUT')
+                                                    <select name="status" onchange="this.form.submit()"
+                                                        class="text-[10px] sm:text-xs px-2 py-1 rounded-md font-bold cursor-pointer outline-none border {{ $selectColor }} appearance-none text-center">
+                                                        <option value="kosong" {{ $item->status == 'kosong' ? 'selected' : '' }}>⏳ KOSONG</option>
+                                                        <option value="take" {{ $item->status == 'take' ? 'selected' : '' }}>🎥 TAKE</option>
+                                                        <option value="edit" {{ $item->status == 'edit' ? 'selected' : '' }}>✂️ EDIT</option>
+                                                        <option value="acc" {{ $item->status == 'acc' ? 'selected' : '' }}>⭐ ACC</option>
+                                                        <option value="upload" {{ $item->status == 'upload' ? 'selected' : '' }}>🚀 UPLOAD</option>
+                                                    </select>
+                                                </form>
+                                            </div>
+                                            
+                                            <div class="bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/80">
+                                                <p class="text-xs sm:text-sm text-slate-300 font-medium truncate">
+                                                    <span class="text-indigo-400 mr-1 font-bold">#</span>{{ $item->pilar_konten }}
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="mt-3 flex justify-between items-center opacity-70 group-hover:opacity-100 transition-opacity">
+                                                <div class="flex gap-2">
+                                                    @if($item->script_video)<span title="Script" class="text-xs">📝</span>@endif
+                                                    @if($item->caption)<span title="Caption" class="text-xs">💬</span>@endif
+                                                    @if($item->link_referensi)<span title="Referensi" class="text-xs">🔗</span>@endif
+                                                    @if($item->link_gdrive)<span title="Drive" class="text-xs">📁</span>@endif
+                                                </div>
+                                                <span class="text-[10px] text-fuchsia-400 font-bold bg-fuchsia-500/10 px-2 py-1 rounded-md border border-fuchsia-500/20">Edit Detail ↗</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                                
-                                <div class="bg-slate-900/50 p-2.5 rounded-lg border border-slate-800">
-                                    <p class="text-xs sm:text-sm text-slate-300 font-medium truncate">
-                                        <span class="text-slate-500 mr-1">#</span>{{ $item->pilar_konten }}
-                                    </p>
-                                </div>
-                                
-                                <div class="mt-3 flex justify-between items-center opacity-70 group-hover:opacity-100 transition-opacity">
-                                    <div class="flex gap-2">
-                                        @if($item->script_video)<span title="Script" class="text-xs">📝</span>@endif
-                                        @if($item->caption)<span title="Caption" class="text-xs">💬</span>@endif
-                                        @if($item->link_referensi)<span title="Referensi" class="text-xs">🔗</span>@endif
-                                        @if($item->link_gdrive)<span title="Drive" class="text-xs">📁</span>@endif
-                                    </div>
-                                    <span class="text-[10px] text-indigo-400 font-bold bg-indigo-500/10 px-2 py-1 rounded-md border border-indigo-500/20">Edit Detail ↗</span>
-                                </div>
+
                             </div>
                         @endforeach
                     </div>
+
                 </div>
             @empty
-                <div class="w-full text-center py-20 bg-slate-800/30 backdrop-blur-sm rounded-3xl border border-dashed border-slate-700/50">
+                <div class="col-span-full text-center py-20 bg-slate-800/30 backdrop-blur-sm rounded-3xl border border-dashed border-slate-700/50">
                     <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
                         <span class="text-4xl text-slate-500">✨</span>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Space masih kosong!</h3>
-                    <p class="text-slate-400 text-sm mb-6">Belum ada target ngonten untuk {{ $minggu_aktif }}.</p>
+                    <p class="text-slate-400 text-sm mb-6">Belum target / jadwal sama sekali.</p>
                     <a href="{{ route('jadwal.create') }}" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-bold transition shadow-[0_0_20px_rgba(79,70,229,0.2)]">
                         + Tambah Target Baru
                     </a>
@@ -270,31 +291,43 @@
 
     <script>
         function copyLaporan() {
-            let laporan = "*LAPORAN QC {{ strtoupper($minggu_aktif) }}* :\n\n";
-            document.querySelectorAll('.snap-start').forEach(col => {
-                let hariEl = col.querySelector('h2');
-                if (!hariEl) return;
+            let laporan = "*LAPORAN QC CREATIVE* :\n\n";
+            document.querySelectorAll('.glass-card').forEach(col => {
+                let klienEl = col.querySelector('h2.tracking-wide');
+                if (!klienEl) return;
                 
-                let hari = hariEl.innerText.trim();
-                let cards = col.querySelectorAll('.group');
-                if(cards.length === 0) return;
+                let klien = klienEl.innerText.replace('🚀', '').trim();
+                let weeks = col.querySelectorAll('.bg-slate-900\\/50');
+                if(weeks.length === 0) return;
 
-                laporan += `*${hari}* :\n`;
+                laporan += `*${klien}* :\n`;
 
-                cards.forEach(card => {
-                    let klien = card.querySelector('.font-extrabold').innerText.trim();
-                    let pilar = card.querySelector('p').innerText.replace('#', '').trim();
-                    let val = card.querySelector('select').value;
+                weeks.forEach(week => {
+                    let mingguEl = week.querySelector('.text-fuchsia-400');
+                    if (!mingguEl) return;
+                    let minggu = mingguEl.innerText.trim();
+                    laporan += `  _${minggu}_\n`;
 
-                    let emoji = "⏳";
-                    if (val == 'upload') emoji = "🚀";
-                    else if (val == 'acc') emoji = "⭐";
-                    else if (val == 'edit') emoji = "✂️";
-                    else if (val == 'take') emoji = "🎥";
+                    let cards = week.querySelectorAll('.group');
+                    cards.forEach(card => {
+                        let hariEl = card.querySelector('.font-bold.text-slate-300');
+                        let pilarEl = card.querySelector('p.truncate');
+                        if(!hariEl || !pilarEl) return;
+                        
+                        let hari = hariEl.innerText.trim();
+                        let pilar = pilarEl.innerText.replace('#', '').trim();
+                        let val = card.querySelector('select').value;
 
-                    laporan += `${klien} : ${pilar} ${emoji}\n`;
+                        let emoji = "⏳";
+                        if (val == 'upload') emoji = "🚀";
+                        else if (val == 'acc') emoji = "⭐";
+                        else if (val == 'edit') emoji = "✂️";
+                        else if (val == 'take') emoji = "🎥";
+
+                        laporan += `    - ${hari} : ${pilar} ${emoji}\n`;
+                    });
+                    laporan += `\n`;
                 });
-                laporan += `\n`;
             });
 
             navigator.clipboard.writeText(laporan.trim()).then(() => {

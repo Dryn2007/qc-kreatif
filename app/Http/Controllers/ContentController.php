@@ -9,14 +9,15 @@ class ContentController extends Controller
 {
     public function index(Request $request)
     {
-        $minggu_aktif = $request->query('minggu', 'Minggu 1');
-
-        $contents = Content::where('minggu', $minggu_aktif)
+        // 1. Ambil semua data tanpa filter minggu
+        // 2. Urutkan berdasarkan minggu, lalu hari
+        // 3. Group utama berdasarkan klien
+        $contents = Content::orderBy('minggu')
             ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu')")
             ->get()
-            ->groupBy('hari');
+            ->groupBy('klien');
 
-        return view('welcome', compact('contents', 'minggu_aktif'));
+        return view('welcome', compact('contents'));
     }
 
     public function create()
@@ -79,19 +80,18 @@ class ContentController extends Controller
     // Export contents as CSV (for Excel compatibility)
     public function exportExcel(Request $request)
     {
-        $minggu = $request->query('minggu', 'Minggu 1');
-        $contents = Content::where('minggu', $minggu)
+        $contents = Content::orderBy('minggu')
             ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu')")
             ->get();
 
-        $filename = 'laporan_qc_' . str_replace(' ', '_', strtolower($minggu)) . '.csv';
+        $filename = 'laporan_qc_all.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"$filename\"",
         ];
 
-        $columns = ['Hari', 'Klien', 'Pilar Konten', 'Status', 'Script', 'Caption', 'Link Referensi', 'Link GDrive'];
+        $columns = ['Minggu', 'Hari', 'Klien', 'Pilar Konten', 'Status', 'Script', 'Caption', 'Link Referensi', 'Link GDrive'];
 
         $callback = function () use ($contents, $columns) {
             $file = fopen('php://output', 'w');
@@ -99,6 +99,7 @@ class ContentController extends Controller
 
             foreach ($contents as $c) {
                 fputcsv($file, [
+                    $c->minggu,
                     $c->hari,
                     $c->klien,
                     $c->pilar_konten,
@@ -119,22 +120,21 @@ class ContentController extends Controller
     // Export contents as PDF (uses dompdf if available, otherwise returns HTML view)
     public function exportPdf(Request $request)
     {
-        $minggu = $request->query('minggu', 'Minggu 1');
-        $contents = Content::where('minggu', $minggu)
+        $contents = Content::orderBy('minggu')
             ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu')")
             ->get()
-            ->groupBy('hari');
+            ->groupBy('klien');
 
         // If Dompdf is installed, render PDF and return download
         if (class_exists(\Dompdf\Dompdf::class)) {
-            $html = view('pdf_report', ['contents' => $contents, 'minggu' => $minggu])->render();
+            $html = view('pdf_report', ['contents' => $contents])->render();
             $dompdf = new \Dompdf\Dompdf();
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'landscape');
             $dompdf->render();
             $output = $dompdf->output();
 
-            $filename = 'laporan_qc_' . str_replace(' ', '_', strtolower($minggu)) . '.pdf';
+            $filename = 'laporan_qc_all.pdf';
             return response($output, 200, [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => "attachment; filename=\"$filename\"",
@@ -142,6 +142,6 @@ class ContentController extends Controller
         }
 
         // Fallback: return HTML view (user can print to PDF from browser)
-        return view('pdf_report', ['contents' => $contents, 'minggu' => $minggu]);
+        return view('pdf_report', ['contents' => $contents]);
     }
 }
