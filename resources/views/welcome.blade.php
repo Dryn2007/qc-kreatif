@@ -200,6 +200,20 @@
                                         </p>
                                     </div>
 
+                                    @if($item->status == 'done_upload' && $item->link_referensi)
+                                        <div class="mt-3 rounded-lg overflow-hidden border border-slate-700/50 bg-slate-900/80 relative tiktok-thumbnail-container hidden" data-tiktok-url="{{ $item->link_referensi }}">
+                                            <div class="absolute inset-0 flex items-center justify-center placeholder-spinner">
+                                                <div class="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                                            </div>
+                                            <img src="" class="w-full h-32 object-cover opacity-0 transition-opacity duration-500 tiktok-img" alt="Tiktok Thumbnail">
+                                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30">
+                                                    <span class="text-white ml-1">▶</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <div class="mt-3 flex justify-between items-center opacity-70 group-hover:opacity-100 transition-opacity">
                                         <div class="flex gap-2">
                                             @if($item->script_video)<span title="Script" class="text-xs">📄</span>@endif
@@ -467,6 +481,36 @@
 
             document.getElementById('step-choose-week').classList.add('hidden');
             document.getElementById('step-tasks').classList.remove('hidden');
+
+            loadTiktokThumbnails();
+        }
+
+        function loadTiktokThumbnails() {
+            const containers = document.querySelectorAll('#task-container .tiktok-thumbnail-container:not(.loaded)');
+            containers.forEach(container => {
+                let url = container.getAttribute('data-tiktok-url');
+                if (url && url.includes('tiktok.com')) {
+                    container.classList.remove('hidden');
+                    fetch('https://www.tiktok.com/oembed?url=' + encodeURIComponent(url))
+                    .then(res => res.json())
+                    .then(data => {
+                        let img = container.querySelector('.tiktok-img');
+                        let spinner = container.querySelector('.placeholder-spinner');
+                        if (data.thumbnail_url) {
+                            img.src = data.thumbnail_url;
+                            img.onload = () => {
+                                img.classList.remove('opacity-0');
+                                if(spinner) spinner.remove();
+                            };
+                            container.classList.add('loaded');
+                        } else {
+                            container.classList.add('hidden');
+                        }
+                    }).catch(e => {
+                        container.classList.add('hidden');
+                    });
+                }
+            });
         }
 
         function openCreateForCurrent() {
@@ -559,11 +603,31 @@
             document.getElementById('formDetail').action = `/update-detail/${id}`;
             document.getElementById('formHapus').action = `/hapus-jadwal/${id}`;
 
+            triggerStatusCheck(document.getElementById('modalStatusSelect').value);
+
             showModal();
         }
 
         function closeModal() {
             hideModal();
+        }
+
+        document.getElementById('modalStatusSelect').addEventListener('change', function() {
+            triggerStatusCheck(this.value);
+        });
+
+        function triggerStatusCheck(statusValue) {
+            const linkRefInput = document.getElementById('modalLinkRef');
+            const linkLabel = linkRefInput.closest('div').querySelector('label');
+            if (statusValue === 'done_upload') {
+                linkRefInput.required = true;
+                linkRefInput.classList.add('ring-2', 'ring-rose-500', 'border-rose-500');
+                linkLabel.innerHTML = '🔗 Link Tiktok/Reels <span class="text-rose-500 font-bold ml-1 animate-pulse">*Wajib Diisi!</span>';
+            } else {
+                linkRefInput.required = false;
+                linkRefInput.classList.remove('ring-2', 'ring-rose-500', 'border-rose-500');
+                linkLabel.innerHTML = '🔗 Link Tiktok/Reels';
+            }
         }
     </script>
 </body>
