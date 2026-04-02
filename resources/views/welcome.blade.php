@@ -1,73 +1,93 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QC Creative Board - LokaVira</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased font-sans p-6">
+<body class="bg-slate-950 text-slate-300 antialiased font-sans min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-[#0f172a] to-black selection:bg-indigo-500/30">
 
-    <div class="max-w-[1500px] mx-auto">
+    <!-- Top Navigation / Header area -->
+    <div class="max-w-[1600px] mx-auto p-4 sm:p-6 lg:p-8">
 
-        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 mb-8">
-            <div class="flex flex-col md:flex-row items-center gap-8">
+        <!-- Header Card -->
+        <div class="glass-card p-6 md:p-8 rounded-3xl shadow-2xl mb-8 relative overflow-hidden">
+            <!-- Decorative blur blobs -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-fuchsia-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
-                <div class="flex-shrink-0 relative">
-                    <img src="{{ asset('images/team.jpg') }}" alt="Creative Team LokaVira"
-                        class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover border-8 border-white ring-4 ring-blue-100 shadow-2xl mx-auto">
-
-                    <div
-                        class="absolute bottom-2 right-2 bg-green-500 text-white p-3 rounded-full shadow-lg border-4 border-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7">
-                            </path>
+            <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8">
+                
+                <!-- Avatar / Logo -->
+                <div class="flex-shrink-0 relative group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-fuchsia-500 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
+                    <img src="{{ asset('images/team.jpg') }}" onerror="this.src='https://ui-avatars.com/api/?name=QC+Team&background=6366f1&color=fff&size=200'" alt="Creative Team LokaVira"
+                        class="relative w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-slate-800 shadow-2xl mx-auto z-10">
+                    <div class="absolute bottom-2 right-2 bg-gradient-to-r from-emerald-500 to-teal-400 text-white p-2.5 rounded-full shadow-lg border-2 border-slate-900 z-20">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </div>
                 </div>
 
-                <div class="flex-grow flex flex-col gap-6 w-full">
-
-                    <div
-                        class="flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-gray-100 pb-5">
-                        <div class="text-center sm:text-left">
-                            <h1 class="text-4xl font-extrabold text-blue-950 tracking-tight">Board QC Creative</h1>
-                            <p class="text-gray-500 mt-1">Real-time Quality Control Board • Creative Team</p>
+                <!-- Info & Actions -->
+                <div class="flex-grow flex flex-col gap-6 w-full mt-2">
+                    <div class="flex flex-col xl:flex-row justify-between items-center xl:items-start gap-6 border-b border-slate-800/60 pb-6">
+                        <div class="text-center xl:text-left">
+                            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2">
+                                Board <span class="bg-gradient-to-r from-indigo-400 to-fuchsia-400 gradient-text">Creative QC</span>
+                            </h1>
+                            <p class="text-slate-400 text-sm md:text-base font-medium flex items-center justify-center xl:justify-start gap-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Real-time Quality Control System
+                            </p>
                         </div>
 
-                        <div class="flex flex-wrap gap-2 flex-shrink-0">
-                            <button onclick="copyLaporan()"
-                                class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold shadow flex items-center gap-2 transition text-xs sm:text-sm whitespace-nowrap">
-                                📋 Copy WA
+                        <div class="flex flex-wrap justify-center xl:justify-end gap-3 flex-shrink-0">
+                            <button onclick="copyLaporan()" class="group relative px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-slate-700 hover:border-indigo-500/50">
+                                <span class="text-lg">📋</span> Copy WA
                             </button>
-                            <a href="{{ route('jadwal.create') }}"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold shadow transition text-xs sm:text-sm whitespace-nowrap">
-                                ➕ Jadwal
+                            <a href="{{ route('jadwal.create') }}" class="group relative px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl font-semibold shadow-[0_0_20px_rgba(79,70,229,0.3)] transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-indigo-400/20 hover:scale-105">
+                                <span class="text-lg">✨</span> + Jadwal
                             </a>
-                            <a href="{{ route('export.excel', ['minggu' => $minggu_aktif]) }}"
-                                class="bg-gray-800 hover:bg-gray-900 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-xl font-bold shadow transition text-xs sm:text-sm whitespace-nowrap">
-                                📥 Excel
+                            <a href="{{ route('export.excel', ['minggu' => $minggu_aktif]) }}" class="group relative px-4 py-2.5 bg-indigo-900/30 hover:bg-indigo-800/40 text-indigo-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-indigo-500/20 hover:border-indigo-400/50">
+                                <span class="text-lg">📊</span> Excel
                             </a>
-                            <a href="{{ route('export.pdf', ['minggu' => $minggu_aktif]) }}"
-                                class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-xl font-bold shadow transition text-xs sm:text-sm whitespace-nowrap">
-                                📄 PDF
+                            <a href="{{ route('export.pdf', ['minggu' => $minggu_aktif]) }}" class="group relative px-4 py-2.5 bg-fuchsia-900/30 hover:bg-fuchsia-800/40 text-fuchsia-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-fuchsia-500/20 hover:border-fuchsia-400/50">
+                                <span class="text-lg">📄</span> PDF
                             </a>
                         </div>
                     </div>
 
-                    <div
-                        class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 text-sm text-blue-900 flex items-center gap-3">
-                        <span class="text-2xl">💡</span>
-                        <p>Pantau progres konten {{ $minggu_aktif }} hari ini. Pastikan semua pilar (BIG, HH, HFC,LV)
-                            berstatus ✅ UPLOAD sebelum akhir hayat!</p>
-                    </div>
-
-                    <div class="flex gap-2.5 overflow-x-auto pb-1">
+                    <!-- Minggu Filter -->
+                    <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide py-1">
                         @foreach(['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'] as $m)
-                            <a href="/?minggu={{ $m }}"
-                                class="px-6 py-2.5 font-bold text-sm rounded-xl transition whitespace-nowrap {{ $minggu_aktif == $m ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
+                            <a href="/?minggu={{ $m }}" 
+                               class="px-5 py-2.5 font-bold text-xs sm:text-sm rounded-xl transition-all duration-300 whitespace-nowrap backdrop-blur-sm border 
+                               {{ $minggu_aktif == $m ? 'bg-indigo-600/20 border-indigo-500/50 text-indigo-300 shadow-[0_0_15px_rgba(99,102,241,0.2)]' : 'bg-slate-800/40 border-slate-700/50 text-slate-400 hover:bg-slate-700/50 hover:text-slate-200' }}">
                                 {{ $m }}
                             </a>
                         @endforeach
@@ -76,193 +96,171 @@
             </div>
         </div>
 
-        <div class="flex overflow-x-auto gap-6 pb-6">
+        <!-- Main Kanban Board -->
+        <div class="flex overflow-x-auto gap-5 pb-8 snap-x snap-mandatory">
             @forelse($contents as $hari => $items)
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 w-full sm:min-w-[320px] sm:flex-shrink-0">
-                    <h2
-                        class="text-lg sm:text-xl font-bold text-gray-800 border-b-2 border-blue-100 pb-3 mb-5 uppercase tracking-wide">
-                        {{ $hari }}
-                    </h2>
+                <div class="glass-card rounded-2xl p-4 sm:p-5 w-full sm:w-[360px] sm:min-w-[360px] flex-shrink-0 snap-start flex flex-col max-h-[750px]">
+                    <div class="flex items-center justify-between border-b border-slate-700/50 pb-4 mb-4">
+                        <h2 class="text-lg font-bold text-slate-200 uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
+                            {{ $hari }}
+                        </h2>
+                        <span class="bg-slate-800 text-xs font-bold text-slate-400 px-2.5 py-1 rounded-lg">{{ count($items) }} cards</span>
+                    </div>
 
-                    <div class="space-y-4">
+                    <div class="space-y-4 overflow-y-auto pr-1 custom-scrollbar">
                         @foreach($items as $item)
                             @php
-                                $color = 'bg-gray-200 text-gray-700';
-                                if ($item->status == 'upload')
-                                    $color = 'bg-green-100 text-green-800';
-                                elseif ($item->status == 'acc')
-                                    $color = 'bg-blue-100 text-blue-800';
-                                elseif ($item->status == 'edit')
-                                    $color = 'bg-yellow-100 text-yellow-800';
-                                elseif ($item->status == 'take')
-                                    $color = 'bg-purple-100 text-purple-800';
+                                $colorOpts = [
+                                    'kosong' => 'bg-slate-800 text-slate-400 border-slate-700 focus:ring-slate-500',
+                                    'take'   => 'bg-violet-900/30 text-violet-300 border-violet-700/50 focus:ring-violet-500',
+                                    'edit'   => 'bg-amber-900/30 text-amber-300 border-amber-700/50 focus:ring-amber-500',
+                                    'acc'    => 'bg-blue-900/30 text-blue-300 border-blue-700/50 focus:ring-blue-500',
+                                    'upload' => 'bg-emerald-900/30 text-emerald-300 border-emerald-700/50 focus:ring-emerald-500'
+                                ];
+                                $selectColor = $colorOpts[$item->status] ?? $colorOpts['kosong'];
+                                
+                                $cardGlow = '';
+                                if ($item->status == 'upload') $cardGlow = 'hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] glow-emerald';
+                                elseif ($item->status == 'acc') $cardGlow = 'hover:border-blue-500/40 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]';
+                                elseif ($item->status == 'edit') $cardGlow = 'hover:border-amber-500/40 hover:shadow-[0_0_15px_rgba(245,158,11,0.15)]';
+                                elseif ($item->status == 'take') $cardGlow = 'hover:border-violet-500/40 hover:shadow-[0_0_15px_rgba(139,92,246,0.15)]';
+                                else $cardGlow = 'hover:border-indigo-500/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)]';
                             @endphp
 
-
-                            <div class="bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-100 hover:shadow-lg transition cursor-pointer"
+                            <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 transition-all duration-300 cursor-pointer group {{ $cardGlow }}"
                                 onclick="openModal(this)" data-id="{{ $item->id }}" data-klien="{{ $item->klien }}"
                                 data-pilar="{{ $item->pilar_konten }}" data-script="{{ $item->script_video }}"
                                 data-caption="{{ $item->caption }}" data-linkref="{{ $item->link_referensi }}"
                                 data-linkdrive="{{ $item->link_gdrive }}">
 
-                                <div class="flex justify-between items-start sm:items-center mb-3 gap-2">
-                                    <span class="font-bold text-blue-900 text-base sm:text-lg tracking-tight">{{ $item->klien }}</span>
-
-                                    <form action="{{ route('update.status', $item->id) }}" method="POST"
-                                        onclick="event.stopPropagation()">
-                                        @csrf
-                                        @method('PUT')
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-extrabold text-white text-base tracking-wide">{{ $item->klien }}</span>
+                                    
+                                    <form action="{{ route('update.status', $item->id) }}" method="POST" onclick="event.stopPropagation()">
+                                        @csrf @method('PUT')
                                         <select name="status" onchange="this.form.submit()"
-                                            class="text-[10px] sm:text-[11px] px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg font-bold cursor-pointer outline-none shadow-inner {{ $color }}">
-                                            <option value="kosong" {{ $item->status == 'kosong' ? 'selected' : '' }}>⏳ KOSONG
-                                            </option>
-                                            <option value="take" {{ $item->status == 'take' ? 'selected' : '' }}>✔️ TAKE</option>
-                                            <option value="edit" {{ $item->status == 'edit' ? 'selected' : '' }}>☑️ EDIT</option>
-                                            <option value="acc" {{ $item->status == 'acc' ? 'selected' : '' }}>⁉️ ACC</option>
-                                            <option value="upload" {{ $item->status == 'upload' ? 'selected' : '' }}>✅ UPLOAD
-                                            </option>
+                                            class="text-[10px] sm:text-xs px-2.5 py-1.5 rounded-lg font-bold cursor-pointer outline-none border {{ $selectColor }} appearance-none text-center">
+                                            <option value="kosong" {{ $item->status == 'kosong' ? 'selected' : '' }}>⏳ KOSONG</option>
+                                            <option value="take" {{ $item->status == 'take' ? 'selected' : '' }}>🎥 TAKE</option>
+                                            <option value="edit" {{ $item->status == 'edit' ? 'selected' : '' }}>✂️ EDIT</option>
+                                            <option value="acc" {{ $item->status == 'acc' ? 'selected' : '' }}>⭐ ACC</option>
+                                            <option value="upload" {{ $item->status == 'upload' ? 'selected' : '' }}>🚀 UPLOAD</option>
                                         </select>
                                     </form>
                                 </div>
-                                <div class="flex flex-col gap-2">
-                                    <p
-                                        class="text-xs sm:text-sm text-gray-600 font-medium bg-white p-2 sm:p-2.5 rounded-lg border border-gray-100">
-                                        {{ $item->pilar_konten }}
+                                
+                                <div class="bg-slate-900/50 p-2.5 rounded-lg border border-slate-800">
+                                    <p class="text-xs sm:text-sm text-slate-300 font-medium truncate">
+                                        <span class="text-slate-500 mr-1">#</span>{{ $item->pilar_konten }}
                                     </p>
-                                    <div class="text-right">
-                                        <span class="text-xs text-blue-500 font-bold bg-blue-50 px-2 py-1 rounded-md">✏️ Detail</span>
+                                </div>
+                                
+                                <div class="mt-3 flex justify-between items-center opacity-70 group-hover:opacity-100 transition-opacity">
+                                    <div class="flex gap-2">
+                                        @if($item->script_video)<span title="Script" class="text-xs">📝</span>@endif
+                                        @if($item->caption)<span title="Caption" class="text-xs">💬</span>@endif
+                                        @if($item->link_referensi)<span title="Referensi" class="text-xs">🔗</span>@endif
+                                        @if($item->link_gdrive)<span title="Drive" class="text-xs">📁</span>@endif
                                     </div>
+                                    <span class="text-[10px] text-indigo-400 font-bold bg-indigo-500/10 px-2 py-1 rounded-md border border-indigo-500/20">Edit Detail ↗</span>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
             @empty
-                <div
-                    class="w-full text-center py-16 sm:py-24 bg-white rounded-2xl border-2 border-dashed border-gray-200 shadow-inner">
-                    <span class="text-4xl sm:text-6xl mb-4 block">🗓️</span>
-                    <p class="text-sm sm:text-base text-gray-400 font-medium">Belum ada jadwal untuk {{ $minggu_aktif }}.</p>
-                    <p class="text-xs sm:text-sm text-gray-400">Klik + Jadwal untuk memulai.</p>
+                <div class="w-full text-center py-20 bg-slate-800/30 backdrop-blur-sm rounded-3xl border border-dashed border-slate-700/50">
+                    <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                        <span class="text-4xl text-slate-500">✨</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Space masih kosong!</h3>
+                    <p class="text-slate-400 text-sm mb-6">Belum ada target ngonten untuk {{ $minggu_aktif }}.</p>
+                    <a href="{{ route('jadwal.create') }}" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-bold transition shadow-[0_0_20px_rgba(79,70,229,0.2)]">
+                        + Tambah Target Baru
+                    </a>
                 </div>
             @endforelse
         </div>
 
-        <div class="mt-12 border-t border-gray-100 pt-6 text-center">
-            <form action="{{ route('jadwal.delete_all') }}" method="POST"
-                onsubmit="return confirm('Yakin hapus SEMUA data? Data tidak bisa kembali.')">
-                @csrf
-                @method('DELETE')
-                <button type="submit"
-                    class="text-red-400 hover:text-red-600 text-xs font-medium underline tracking-wide">
-                    Hapus Semua Data & Reset Board
+        <!-- Footer Danger Zone -->
+        <div class="mt-8 text-center pb-8">
+            <form action="{{ route('jadwal.delete_all') }}" method="POST" onsubmit="return confirm('HATI-HATI! Yakin hapus SEMUA data secara permanen?')">
+                @csrf @method('DELETE')
+                <button type="submit" class="text-slate-500 hover:text-red-400 text-xs font-bold transition-colors border border-transparent hover:border-red-500/30 hover:bg-red-500/10 px-4 py-2 rounded-lg">
+                    ⚠️ Hapus Semua Data & Reset Board
                 </button>
             </form>
         </div>
     </div>
 
-    <script>
-        // Show/hide modal
-        function showModal() {
-            const modal = document.getElementById('detailModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('opacity-100'), 0);
-        }
-        function hideModal() {
-            const modal = document.getElementById('detailModal');
-            modal.classList.remove('opacity-100');
-            setTimeout(() => modal.style.display = 'none', 300);
-        }
-            let laporan = "*LAPORAN QC {{ strtoupper($minggu_aktif) }}* :\n\n";
-            document.querySelectorAll('.flex-shrink-0').forEach(col => {
-                let hari = col.querySelector('h2');
-                if (!hari) return; // Skip if no cards
-                hari = hari.innerText;
-                laporan += `*${hari}* :\n`;
+    <!-- Glass Modal -->
+    <div id="detailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 invisible opacity-0 transition-all duration-300 flex items-center justify-center p-4">
+        <div class="bg-slate-900 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-slate-700 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative transform scale-95 transition-transform duration-300" id="modalContent">
 
-                col.querySelectorAll('.bg-gray-50').forEach(card => {
-                    let klien = card.querySelector('.font-bold').innerText;
-                    let pilar = card.querySelector('p').innerText;
-                    let val = card.querySelector('select').value;
+            <div class="sticky top-0 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-5 sm:p-6 flex justify-between items-center z-10">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+                        <span id="modalKlien" class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400"></span>
+                    </h2>
+                    <p class="text-slate-400 text-sm font-medium mt-1">Pilar: <span id="modalPilar" class="text-slate-300 font-bold"></span></p>
+                </div>
+                <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
 
-                    let emoji = "⏳";
-                    if (val == 'upload') emoji = "✅";
-                    else if (val == 'acc') emoji = "⁉️";
-                    else if (val == 'edit') emoji = "☑️";
-                    else if (val == 'take') emoji = "✔️";
+            <div class="p-5 sm:p-6 sm:px-8">
+                <form id="formDetail" method="POST" class="space-y-5">
+                    @csrf @method('PUT')
 
-                    laporan += `${klien} : ${pilar} ${emoji}\n`;
-                });
-                laporan += `\n`;
-            });
-
-            navigator.clipboard.writeText(laporan.trim()).then(() => {
-                alert("Laporan {{ $minggu_aktif }} disalin ke clipboard!");
-            });
-        }
-    </script>\
-
-    <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 invisible opacity-0 transition-all flex items-center justify-center p-4" style="display:none;">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl sm:max-w-3xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto relative">
-
-            <button onclick="closeModal()"
-                class="absolute top-3 sm:top-4 right-3 sm:right-4 text-gray-400 hover:text-red-500 text-xl sm:text-2xl font-bold">&times;</button>
-
-            <div class="p-4 sm:p-8">
-                <h2 class="text-xl sm:text-2xl font-bold text-blue-900 mb-1">Detail Konten: <span id="modalKlien"></span></h2>
-                <p class="text-gray-500 mb-4 sm:mb-6 font-medium border-b pb-3 sm:pb-4 text-sm sm:text-base">Pilar: <span id="modalPilar"></span></p>
-
-                <form id="formDetail" method="POST" class="space-y-4">
-                    @csrf
-                    @method('PUT')
-
-                    <div>
-                        <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1">📝 Script Video</label>
-                        <textarea id="modalScript" name="script_video" rows="3"
-                            class="w-full text-xs sm:text-sm border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500"
-                            placeholder="Ketik script / voice over di sini..."></textarea>
+                    <div class="group">
+                        <label class="block text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">📝 Script Video / Voice Over</label>
+                        <textarea id="modalScript" name="script_video" rows="4"
+                            class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder-slate-600 resize-none"
+                            placeholder="Ketik script di sini..."></textarea>
                     </div>
 
-                    <div>
-                        <div class="flex justify-between items-end mb-1">
-                            <label class="block text-xs sm:text-sm font-bold text-gray-700">#️⃣ Caption & Hashtag</label>
-                        </div>
+                    <div class="group">
+                        <label class="block text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-2">#️⃣ Caption & Hashtag</label>
                         <textarea id="modalCaption" name="caption" rows="3"
-                            class="w-full text-xs sm:text-sm border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500"
+                            class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-all placeholder-slate-600 resize-none"
                             placeholder="Tulis caption dan hashtag di sini..."></textarea>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1">🔗 Link Referensi
-                                (TikTok/Reels)</label>
-                            <input type="text" id="modalLinkRef" name="link_referensi"
-                                class="w-full text-xs sm:text-sm border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500"
-                                placeholder="https://tiktok.com/...">
+                            <label class="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">🔗 Link Tiktok/Reels</label>
+                            <input type="url" id="modalLinkRef" name="link_referensi"
+                                class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-slate-600"
+                                placeholder="https://...">
                         </div>
                         <div>
-                            <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1">📁 Link Template / GDrive</label>
-                            <input type="text" id="modalLinkDrive" name="link_gdrive"
-                                class="w-full text-xs sm:text-sm border border-gray-300 rounded-lg px-3 py-2 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500"
+                            <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">📁 Link GDrive</label>
+                            <input type="url" id="modalLinkDrive" name="link_gdrive"
+                                class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-slate-600"
                                 placeholder="https://drive.google.com/...">
                         </div>
                     </div>
 
-                    <div class="pt-4 sm:pt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
+                    <div class="pt-6 mt-4 border-t border-slate-800 flex justify-end gap-3">
                         <button type="button" onclick="closeModal()"
-                            class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold transition text-sm sm:text-base">Batal</button>
+                            class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition">Batal</button>
                         <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold transition shadow-md text-sm sm:text-base">Simpan
-                            Detail</button>
+                            class="px-8 py-2.5 bg-gradient-to-r from-indigo-600 to-fuchsia-600 hover:from-indigo-500 hover:to-fuchsia-500 text-white rounded-xl font-bold shadow-[0_0_20px_rgba(99,102,241,0.3)] transition transform hover:scale-105">Simpan Data</button>
                     </div>
                 </form>
 
-                <form id="formHapus" method="POST" class="mt-8 pt-4 border-t border-red-100"
-                    onsubmit="return confirm('Yakin ingin menghapus jadwal ini? Data tidak bisa kembali.')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit"
-                        class="text-red-500 hover:text-red-700 hover:bg-red-50 text-sm font-bold px-4 py-2 rounded-lg transition flex items-center gap-2">
-                        🗑️ Hapus Jadwal Ini Saja
+                <div class="mt-8 relative">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true"><div class="w-full border-t border-red-900/30"></div></div>
+                    <div class="relative flex justify-center"><span class="px-3 bg-slate-900 text-xs text-red-500/50 font-bold uppercase">Danger Zone</span></div>
+                </div>
+
+                <form id="formHapus" method="POST" class="mt-6 flex justify-center" onsubmit="return confirm('Yakin ingin menghapus jadwal ini? Data hilang permanen.')">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="group flex items-center gap-2 text-red-400 hover:text-white hover:bg-red-600 border border-red-900/50 hover:border-red-600 px-5 py-2 rounded-xl text-sm font-bold transition-all">
+                        <svg class="w-4 h-4 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        Hapus Jadwal Ini
                     </button>
                 </form>
 
@@ -271,35 +269,84 @@
     </div>
 
     <script>
-        // Copy laporan lama biarkan saja... (kode copyLaporan)
+        function copyLaporan() {
+            let laporan = "*LAPORAN QC {{ strtoupper($minggu_aktif) }}* :\n\n";
+            document.querySelectorAll('.snap-start').forEach(col => {
+                let hariEl = col.querySelector('h2');
+                if (!hariEl) return;
+                
+                let hari = hariEl.innerText.trim();
+                let cards = col.querySelectorAll('.group');
+                if(cards.length === 0) return;
 
-        // Fungsi Buka Modal Detail
+                laporan += `*${hari}* :\n`;
+
+                cards.forEach(card => {
+                    let klien = card.querySelector('.font-extrabold').innerText.trim();
+                    let pilar = card.querySelector('p').innerText.replace('#', '').trim();
+                    let val = card.querySelector('select').value;
+
+                    let emoji = "⏳";
+                    if (val == 'upload') emoji = "🚀";
+                    else if (val == 'acc') emoji = "⭐";
+                    else if (val == 'edit') emoji = "✂️";
+                    else if (val == 'take') emoji = "🎥";
+
+                    laporan += `${klien} : ${pilar} ${emoji}\n`;
+                });
+                laporan += `\n`;
+            });
+
+            navigator.clipboard.writeText(laporan.trim()).then(() => {
+                alert("Laporan berhasil disalin! Silakan paste di WA.");
+            }).catch(() => {
+                alert("Gagal menyalin, silakan coba lagi.");
+            });
+        }
+
+        function showModal() {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('modalContent');
+            modal.classList.remove('invisible');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function hideModal() {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('modalContent');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('invisible');
+                modal.style.display = 'none';
+            }, 300);
+        }
+
         function openModal(element) {
             let id = element.getAttribute('data-id');
 
-            // Isi Teks Judul
             document.getElementById('modalKlien').innerText = element.getAttribute('data-klien');
             document.getElementById('modalPilar').innerText = element.getAttribute('data-pilar');
-
-            // Isi Form Input (Kalau ada isinya, kalau gak kosongin)
             document.getElementById('modalScript').value = element.getAttribute('data-script') || '';
             document.getElementById('modalCaption').value = element.getAttribute('data-caption') || '';
             document.getElementById('modalLinkRef').value = element.getAttribute('data-linkref') || '';
             document.getElementById('modalLinkDrive').value = element.getAttribute('data-linkdrive') || '';
 
-            // Atur URL Action untuk Form Simpan & Form Hapus
             document.getElementById('formDetail').action = `/update-detail/${id}`;
             document.getElementById('formHapus').action = `/hapus-jadwal/${id}`;
 
-            // Tampilkan Modal
             showModal();
         }
 
-        // Fungsi Tutup Modal
         function closeModal() {
             hideModal();
         }
     </script>
 </body>
-
 </html>
