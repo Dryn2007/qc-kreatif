@@ -4,24 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Content;
-use GuzzleHttp\Client;
-
-/**
- * Notes:
- * - This controller now supports uploading an image (screenshot) that contains
- *   the weekly schedule. It will call OCR.space (if API key provided via
- *   OCR_SPACE_API_KEY env) to extract text, parse it into day/entries, and
- *   create `Content` records.
- */
 
 class ContentController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil minggu aktif dari URL, default Minggu 1
         $minggu_aktif = $request->query('minggu', 'Minggu 1');
 
-        // Ambil data berdasarkan minggu dan urutkan harinya
         $contents = Content::where('minggu', $minggu_aktif)
             ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu')")
             ->get()
@@ -68,7 +57,6 @@ class ContentController extends Controller
         return redirect('/');
     }
 
-    // Fungsi untuk menyimpan isian Modal Detail
     public function updateDetail(Request $request, $id)
     {
         $content = Content::findOrFail($id);
@@ -82,131 +70,78 @@ class ContentController extends Controller
         return back()->with('success', 'Detail berhasil disimpan!');
     }
 
-    // Fungsi untuk menghapus 1 data
     public function destroy($id)
     {
         Content::destroy($id);
         return back()->with('success', 'Jadwal berhasil dihapus!');
     }
 
-    // Show upload form
-    public function showUploadForm()
+    // Export contents as CSV (for Excel compatibility)
+    public function exportExcel(Request $request)
     {
-        return view('upload');
+        $minggu = $request->query('minggu', 'Minggu 1');
+        $contents = Content::where('minggu', $minggu)
+            ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu')")
+            ->get();
+
+        $filename = 'laporan_qc_' . str_replace(' ', '_', strtolower($minggu)) . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ];
+
+        $columns = ['Hari', 'Klien', 'Pilar Konten', 'Status', 'Script', 'Caption', 'Link Referensi', 'Link GDrive'];
+
+        $callback = function () use ($contents, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($contents as $c) {
+                fputcsv($file, [
+                    $c->hari,
+                    $c->klien,
+                    $c->pilar_konten,
+                    $c->status,
+                    $c->script_video,
+                    $c->caption,
+                    $c->link_referensi,
+                    $c->link_gdrive,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
-    // Handle upload and OCR parsing
-    public function processUpload(Request $request)
+    // Export contents as PDF (uses dompdf if available, otherwise returns HTML view)
+    public function exportPdf(Request $request)
     {
-        $request->validate([
-            'image' => 'required|image|max:10240', // max 10MB
-            'minggu' => 'nullable|string'
-        ]);
+        $minggu = $request->query('minggu', 'Minggu 1');
+        $contents = Content::where('minggu', $minggu)
+            ->orderByRaw("FIELD(hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu')")
+            ->get()
+            ->groupBy('hari');
 
-        $file = $request->file('image');
-        $path = $file->store('uploads', 'public');
-        $fullPath = storage_path('app/public/' . $path);
+        // If Dompdf is installed, render PDF and return download
+        if (class_exists(\Dompdf\Dompdf::class)) {
+            $html = view('pdf_report', ['contents' => $contents, 'minggu' => $minggu])->render();
+            $dompdf = new \Dompdf\Dompdf();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'landscape');
+            $dompdf->render();
+            $output = $dompdf->output();
 
-        // Use OCR.space if key available; otherwise try demo key 'helloworld' (limited)
-        $apiKey = env('OCR_SPACE_API_KEY', 'helloworld');
-
-        $client = new Client(['timeout' => 30]);
-
-        try {
-            $base64 = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($fullPath));
-
-            $response = $client->request('POST', 'https://api.ocr.space/parse/image', [
-                'form_params' => [
-                    'apikey' => $apiKey,
-                    'base64Image' => $base64,
-                    'language' => 'ind',
-                    'isOverlayRequired' => 'false'
-                ]
+            $filename = 'laporan_qc_' . str_replace(' ', '_', strtolower($minggu)) . '.pdf';
+            return response($output, 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => "attachment; filename=\"$filename\"",
             ]);
-
-            $body = json_decode($response->getBody()->getContents(), true);
-
-            if (empty($body['ParsedResults'][0]['ParsedText'])) {
-                return back()->with('error', 'OCR gagal mengekstrak teks dari gambar.');
-            }
-
-            $text = $body['ParsedResults'][0]['ParsedText'];
-        } catch (\Throwable $e) {
-            return back()->with('error', 'Terjadi kesalahan OCR: ' . $e->getMessage());
         }
 
-        // Parse the extracted text into schedule entries
-        $lines = preg_split('/\r\n|\n|\r/', $text);
-        $daysMap = ['SENIN' => 'Senin', 'SELASA' => 'Selasa', 'RABU' => 'Rabu', 'KAMIS' => 'Kamis', 'JUMAT' => 'Jumat', 'SABTU' => 'Sabtu', 'MINGGU' => 'Minggu'];
-        $currentDay = null;
-        $minggu = $request->input('minggu', 'Minggu 1');
-
-        $parsed = [];
-        foreach ($lines as $line) {
-            $line = trim($line);
-            if ($line === '') continue;
-
-            // Check if line is a day header
-            $upper = mb_strtoupper(preg_replace('/[^\p{L}]/u', '', $line));
-            if (isset($daysMap[$upper])) {
-                $currentDay = $daysMap[$upper];
-                continue;
-            }
-
-            // Try to parse key:value pair (e.g., BIG: Hiburan)
-            if (preg_match('/^([A-Za-z0-9 _\-]+)\s*[:\-]\s*(.+)$/u', $line, $m)) {
-                $key = trim($m[1]);
-                $value = trim($m[2]);
-
-                // Remove common emoji markers and checkmarks
-                $value = preg_replace('/[✅✔✖❌❗❓\\x{1F600}-\\x{1F6FF}]/u', '', $value);
-                $value = trim($value);
-
-                if ($currentDay) {
-                    $parsed[] = [
-                        'klien' => $key,
-                        'hari' => $currentDay,
-                        'minggu' => $minggu,
-                        'pilar_konten' => $value,
-                        'status' => 'kosong'
-                    ];
-                }
-            }
-        }
-
-        if (empty($parsed)) {
-            return back()->with('error', 'Tidak ditemukan entri yang dapat diparsing.');
-        }
-
-        // Simpan hasil parse sementara di session untuk preview
-        session(['ocr_parsed' => $parsed]);
-
-        return view('upload_preview', ['parsed' => $parsed, 'minggu' => $minggu, 'imagePath' => $path]);
-    }
-
-    // Simpan entri yang dipilih dari preview
-    public function processSave(Request $request)
-    {
-        $parsed = session('ocr_parsed', []);
-        if (empty($parsed)) {
-            return redirect()->route('upload.form')->with('error', 'Tidak ada data hasil OCR untuk disimpan.');
-        }
-
-        $selected = $request->input('selected', []); // array of indexes
-        $saved = 0;
-
-        foreach ($parsed as $idx => $entry) {
-            if (!empty($selected) && !in_array((string)$idx, $selected)) {
-                continue; // skip unchecked
-            }
-
-            Content::create($entry);
-            $saved++;
-        }
-
-        // Clear session parsed data
-        session()->forget('ocr_parsed');
-
-        return redirect('/')->with('success', "Selesai: $saved entri disimpan.");
+        // Fallback: return HTML view (user can print to PDF from browser)
+        return view('pdf_report', ['contents' => $contents, 'minggu' => $minggu]);
     }
 }

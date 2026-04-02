@@ -46,6 +46,14 @@
                                 class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold shadow transition text-sm">
                                 + Tambah Jadwal
                             </a>
+                            <a href="{{ route('export.excel', ['minggu' => $minggu_aktif]) }}"
+                                class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-xl font-bold shadow transition text-sm">
+                                📥 Export Excel
+                            </a>
+                            <a href="{{ route('export.pdf', ['minggu' => $minggu_aktif]) }}"
+                                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-xl font-bold shadow transition text-sm">
+                                📄 Export PDF
+                            </a>
                         </div>
                     </div>
 
@@ -73,53 +81,61 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 min-w-[320px] flex-shrink-0">
                     <h2
                         class="text-xl font-bold text-gray-800 border-b-2 border-blue-100 pb-3 mb-5 uppercase tracking-wide">
-                        {{ $hari }}</h2>
+                        {{ $hari }}
+                    </h2>
 
                     <div class="space-y-4">
-                    @foreach($items as $item)
-                        @php
-                            $color = 'bg-gray-200 text-gray-700';
-                            if ($item->status == 'upload')
-                                $color = 'bg-green-100 text-green-800';
-                            elseif ($item->status == 'acc')
-                                $color = 'bg-blue-100 text-blue-800';
-                            elseif ($item->status == 'edit')
-                                $color = 'bg-yellow-100 text-yellow-800';
-                            elseif ($item->status == 'take')
-                                $color = 'bg-purple-100 text-purple-800';
-                        @endphp
+                        @foreach($items as $item)
+                            @php
+                                $color = 'bg-gray-200 text-gray-700';
+                                if ($item->status == 'upload')
+                                    $color = 'bg-green-100 text-green-800';
+                                elseif ($item->status == 'acc')
+                                    $color = 'bg-blue-100 text-blue-800';
+                                elseif ($item->status == 'edit')
+                                    $color = 'bg-yellow-100 text-yellow-800';
+                                elseif ($item->status == 'take')
+                                    $color = 'bg-purple-100 text-purple-800';
+                            @endphp
 
 
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 hover:shadow-lg transition cursor-pointer"
-                            onclick="openModal(this)" data-id="{{ $item->id }}" data-klien="{{ $item->klien }}"
-                            data-pilar="{{ $item->pilar_konten }}" data-script="{{ $item->script_video }}" data-caption="{{ $item->caption }}"
-                            data-linkref="{{ $item->link_referensi }}" data-linkdrive="{{ $item->link_gdrive }}">
+                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 hover:shadow-lg transition cursor-pointer"
+                                onclick="openModal(this)" data-id="{{ $item->id }}" data-klien="{{ $item->klien }}"
+                                data-pilar="{{ $item->pilar_konten }}" data-script="{{ $item->script_video }}"
+                                data-caption="{{ $item->caption }}" data-linkref="{{ $item->link_referensi }}"
+                                data-linkdrive="{{ $item->link_gdrive }}">
 
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="font-bold text-blue-900 text-lg tracking-tight">{{ $item->klien }}</span>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-blue-900 text-lg tracking-tight">{{ $item->klien }}</span>
 
-                                <form action="{{ route('update.status', $item->id) }}" method="POST" onclick="event.stopPropagation()">
-                                    @csrf
-                                    @method('PUT')
-                                    <select name="status" onchange="this.form.submit()"
-                                        class="text-[11px] px-3 py-1.5 rounded-lg font-bold cursor-pointer outline-none shadow-inner {{ $color }}">
-                                        <option value="kosong" {{ $item->status == 'kosong' ? 'selected' : '' }}>⏳ KOSONG</option>
-                                        <option value="take" {{ $item->status == 'take' ? 'selected' : '' }}>✔️ TAKE</option>
-                                        <option value="edit" {{ $item->status == 'edit' ? 'selected' : '' }}>☑️ EDIT</option>
-                                        <option value="acc" {{ $item->status == 'acc' ? 'selected' : '' }}>⁉️ ACC</option>
-                                        <option value="upload" {{ $item->status == 'upload' ? 'selected' : '' }}>✅ UPLOAD</option>
-                                    </select>
-                                </form>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <p class="text-sm text-gray-600 font-medium bg-white p-2.5 rounded-lg border border-gray-100">
-                                    {{ $item->pilar_konten }}</p>
-                                <div class="text-right">
-                                    <span class="text-xs text-blue-500 font-bold bg-blue-50 px-2 py-1 rounded-md">✏️ Buka Detail</span>
+                                    <form action="{{ route('update.status', $item->id) }}" method="POST"
+                                        onclick="event.stopPropagation()">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="status" onchange="this.form.submit()"
+                                            class="text-[11px] px-3 py-1.5 rounded-lg font-bold cursor-pointer outline-none shadow-inner {{ $color }}">
+                                            <option value="kosong" {{ $item->status == 'kosong' ? 'selected' : '' }}>⏳ KOSONG
+                                            </option>
+                                            <option value="take" {{ $item->status == 'take' ? 'selected' : '' }}>✔️ TAKE</option>
+                                            <option value="edit" {{ $item->status == 'edit' ? 'selected' : '' }}>☑️ EDIT</option>
+                                            <option value="acc" {{ $item->status == 'acc' ? 'selected' : '' }}>⁉️ ACC</option>
+                                            <option value="upload" {{ $item->status == 'upload' ? 'selected' : '' }}>✅ UPLOAD
+                                            </option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <p
+                                        class="text-sm text-gray-600 font-medium bg-white p-2.5 rounded-lg border border-gray-100">
+                                        {{ $item->pilar_konten }}
+                                    </p>
+                                    <div class="text-right">
+                                        <span class="text-xs text-blue-500 font-bold bg-blue-50 px-2 py-1 rounded-md">✏️ Buka
+                                            Detail</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
                     </div>
                 </div>
             @empty
