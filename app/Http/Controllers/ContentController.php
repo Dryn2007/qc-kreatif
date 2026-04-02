@@ -29,20 +29,32 @@ class ContentController extends Controller
     {
         $request->validate([
             'klien' => 'required',
-            'hari' => 'required',
             'minggu' => 'required',
+            'hari' => 'required',
+            'tanggal' => 'required|date',
             'pilar_konten' => 'required',
         ]);
+
+        // Cek apakah klien sudah ada jadwal di hari dan minggu tersebut
+        $exists = Content::where('klien', $request->klien)
+            ->where('minggu', $request->minggu)
+            ->where('hari', $request->hari)
+            ->exists();
+
+        if ($exists) {
+            return back()->with('error', "Jadwal untuk klien {$request->klien} di hari {$request->hari} pada {$request->minggu} sudah ada!");
+        }
 
         Content::create([
             'klien' => $request->klien,
             'hari' => $request->hari,
+            'tanggal' => $request->tanggal,
             'minggu' => $request->minggu,
             'pilar_konten' => $request->pilar_konten,
             'status' => 'kosong'
         ]);
 
-        return redirect('/?minggu=' . $request->minggu);
+        return redirect('/')->with('success', 'Jadwal baru berhasil ditambahkan!');
     }
 
     public function updateStatus(Request $request, $id)

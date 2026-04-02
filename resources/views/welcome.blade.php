@@ -8,18 +8,31 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Custom scrollbar for dark theme */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
         .glass-card {
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .gradient-text {
             background-clip: text;
             -webkit-background-clip: text;
@@ -28,7 +41,8 @@
     </style>
 </head>
 
-<body class="bg-slate-950 text-slate-300 antialiased font-sans min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-[#0f172a] to-black selection:bg-indigo-500/30">
+<body
+    class="bg-slate-950 text-slate-300 antialiased font-sans min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-[#0f172a] to-black selection:bg-indigo-500/30">
 
     <!-- Top Navigation / Header area -->
     <div class="max-w-[1600px] mx-auto p-4 sm:p-6 lg:p-8">
@@ -36,47 +50,65 @@
         <!-- Header Card -->
         <div class="glass-card p-6 md:p-8 rounded-3xl shadow-2xl mb-8 relative overflow-hidden">
             <!-- Decorative blur blobs -->
-            <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-fuchsia-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div
+                class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none">
+            </div>
+            <div
+                class="absolute -bottom-24 -left-24 w-96 h-96 bg-fuchsia-600/20 rounded-full blur-3xl pointer-events-none">
+            </div>
 
             <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8">
-                
+
                 <!-- Avatar / Logo -->
                 <div class="flex-shrink-0 relative group">
-                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-fuchsia-500 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
-                    <img src="{{ asset('images/team.jpg') }}" onerror="this.src='https://ui-avatars.com/api/?name=QC+Team&background=6366f1&color=fff&size=200'" alt="Creative Team LokaVira"
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-fuchsia-500 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-500">
+                    </div>
+                    <img src="{{ asset('images/team.jpg') }}"
+                        onerror="this.src='https://ui-avatars.com/api/?name=QC+Team&background=6366f1&color=fff&size=200'"
+                        alt="Creative Team LokaVira"
                         class="relative w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-slate-800 shadow-2xl mx-auto z-10">
-                    <div class="absolute bottom-2 right-2 bg-gradient-to-r from-emerald-500 to-teal-400 text-white p-2.5 rounded-full shadow-lg border-2 border-slate-900 z-20">
+                    <div
+                        class="absolute bottom-2 right-2 bg-gradient-to-r from-emerald-500 to-teal-400 text-white p-2.5 rounded-full shadow-lg border-2 border-slate-900 z-20">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7">
+                            </path>
                         </svg>
                     </div>
                 </div>
 
                 <!-- Info & Actions -->
                 <div class="flex-grow flex flex-col gap-6 w-full mt-2">
-                    <div class="flex flex-col xl:flex-row justify-between items-center xl:items-start gap-6 border-b border-slate-800/60 pb-6">
+                    <div
+                        class="flex flex-col xl:flex-row justify-between items-center xl:items-start gap-6 border-b border-slate-800/60 pb-6">
                         <div class="text-center xl:text-left">
                             <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2">
-                                Board <span class="bg-gradient-to-r from-indigo-400 to-fuchsia-400 gradient-text">Creative QC</span>
+                                Board <span
+                                    class="bg-gradient-to-r from-indigo-400 to-fuchsia-400 gradient-text">Creative
+                                    QC</span>
                             </h1>
-                            <p class="text-slate-400 text-sm md:text-base font-medium flex items-center justify-center xl:justify-start gap-2">
+                            <p
+                                class="text-slate-400 text-sm md:text-base font-medium flex items-center justify-center xl:justify-start gap-2">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                                 Real-time Quality Control System
                             </p>
                         </div>
 
                         <div class="flex flex-wrap justify-center xl:justify-end gap-3 flex-shrink-0">
-                            <button onclick="copyLaporan()" class="group relative px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-slate-700 hover:border-indigo-500/50">
+                            <button onclick="copyLaporan()"
+                                class="group relative px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-slate-700 hover:border-indigo-500/50">
                                 <span class="text-lg">📋</span> Copy WA
                             </button>
-                            <a href="{{ route('jadwal.create') }}" class="group relative px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl font-semibold shadow-[0_0_20px_rgba(79,70,229,0.3)] transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-indigo-400/20 hover:scale-105">
+                            <button onclick="showCreateModal()"
+                                class="group relative px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl font-semibold shadow-[0_0_20px_rgba(79,70,229,0.3)] transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-indigo-400/20 hover:scale-105">
                                 <span class="text-lg">✨</span> + Jadwal
-                            </a>
-                            <a href="{{ route('export.excel') }}" class="group relative px-4 py-2.5 bg-indigo-900/30 hover:bg-indigo-800/40 text-indigo-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-indigo-500/20 hover:border-indigo-400/50">
+                            </button>
+                            <a href="{{ route('export.excel') }}"
+                                class="group relative px-4 py-2.5 bg-indigo-900/30 hover:bg-indigo-800/40 text-indigo-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-indigo-500/20 hover:border-indigo-400/50">
                                 <span class="text-lg">📊</span> Excel
                             </a>
-                            <a href="{{ route('export.pdf') }}" class="group relative px-4 py-2.5 bg-fuchsia-900/30 hover:bg-fuchsia-800/40 text-fuchsia-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-fuchsia-500/20 hover:border-fuchsia-400/50">
+                            <a href="{{ route('export.pdf') }}"
+                                class="group relative px-4 py-2.5 bg-fuchsia-900/30 hover:bg-fuchsia-800/40 text-fuchsia-300 rounded-xl font-semibold shadow-lg transition-all duration-300 text-xs sm:text-sm flex items-center gap-2 border border-fuchsia-500/20 hover:border-fuchsia-400/50">
                                 <span class="text-lg">📄</span> PDF
                             </a>
                         </div>
@@ -89,16 +121,22 @@
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 pb-8">
             @forelse($contents as $klien => $items_klien)
                 <!-- Kotak BIG Laporan Per Klien -->
-                <div class="glass-card rounded-3xl p-5 sm:p-7 w-full flex flex-col relative border border-slate-700/50 shadow-2xl">
-                    
+                <div
+                    class="glass-card rounded-3xl p-5 sm:p-7 w-full flex flex-col relative border border-slate-700/50 shadow-2xl">
+
                     <!-- Header Klien -->
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-indigo-500/30 pb-4 mb-6 relative">
-                        <div class="absolute -top-4 -left-4 w-20 h-20 bg-indigo-600/10 rounded-full blur-2xl pointer-events-none"></div>
+                    <div
+                        class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-indigo-500/30 pb-4 mb-6 relative">
+                        <div
+                            class="absolute -top-4 -left-4 w-20 h-20 bg-indigo-600/10 rounded-full blur-2xl pointer-events-none">
+                        </div>
                         <h2 class="text-2xl font-extrabold text-white tracking-wide flex items-center gap-3">
-                            <span class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-fuchsia-500 rounded-xl flex items-center justify-center text-xl shadow-[0_0_15px_rgba(99,102,241,0.4)]">🚀</span>
+                            <span
+                                class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-fuchsia-500 rounded-xl flex items-center justify-center text-xl shadow-[0_0_15px_rgba(99,102,241,0.4)]">🚀</span>
                             {{ $klien }}
                         </h2>
-                        <span class="mt-3 sm:mt-0 bg-slate-800/80 text-xs font-bold text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700/50">
+                        <span
+                            class="mt-3 sm:mt-0 bg-slate-800/80 text-xs font-bold text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700/50">
                             Total: {{ count($items_klien) }} Task
                         </span>
                     </div>
@@ -108,14 +146,19 @@
                         @php
                             $grouped_minggu = $items_klien->groupBy('minggu');
                         @endphp
-                        
+
                         @foreach($grouped_minggu as $minggu_name => $items_minggu)
                             <div class="bg-slate-900/50 rounded-2xl p-4 border border-slate-700/40">
-                                
+
                                 <div class="flex items-center gap-3 mb-4">
                                     <div class="h-px bg-slate-700 flex-grow"></div>
-                                    <span class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest bg-slate-900/80 px-4 py-1 rounded-full border border-fuchsia-500/20">
+                                    <span
+                                        class="text-sm font-bold text-fuchsia-400 uppercase tracking-widest bg-slate-900/80 px-4 py-1 rounded-full border border-fuchsia-500/20 flex items-center gap-2">
                                         {{ $minggu_name }}
+                                        <button onclick="showCreateModal('{{ $klien }}', '{{ $minggu_name }}')"
+                                            class="text-xs bg-indigo-600/30 hover:bg-indigo-500 text-white px-2 py-0.5 rounded-md ml-2 transition">
+                                            + Target
+                                        </button>
                                     </span>
                                     <div class="h-px bg-slate-700 flex-grow"></div>
                                 </div>
@@ -126,19 +169,24 @@
                                         @php
                                             $colorOpts = [
                                                 'kosong' => 'bg-slate-800 text-slate-400 border-slate-700 focus:ring-slate-500',
-                                                'take'   => 'bg-violet-900/30 text-violet-300 border-violet-700/50 focus:ring-violet-500',
-                                                'edit'   => 'bg-amber-900/30 text-amber-300 border-amber-700/50 focus:ring-amber-500',
-                                                'acc'    => 'bg-blue-900/30 text-blue-300 border-blue-700/50 focus:ring-blue-500',
+                                                'take' => 'bg-violet-900/30 text-violet-300 border-violet-700/50 focus:ring-violet-500',
+                                                'edit' => 'bg-amber-900/30 text-amber-300 border-amber-700/50 focus:ring-amber-500',
+                                                'acc' => 'bg-blue-900/30 text-blue-300 border-blue-700/50 focus:ring-blue-500',
                                                 'upload' => 'bg-emerald-900/30 text-emerald-300 border-emerald-700/50 focus:ring-emerald-500'
                                             ];
                                             $selectColor = $colorOpts[$item->status] ?? $colorOpts['kosong'];
-                                            
+
                                             $cardGlow = '';
-                                            if ($item->status == 'upload') $cardGlow = 'hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] glow-emerald';
-                                            elseif ($item->status == 'acc') $cardGlow = 'hover:border-blue-500/40 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]';
-                                            elseif ($item->status == 'edit') $cardGlow = 'hover:border-amber-500/40 hover:shadow-[0_0_15px_rgba(245,158,11,0.15)]';
-                                            elseif ($item->status == 'take') $cardGlow = 'hover:border-violet-500/40 hover:shadow-[0_0_15px_rgba(139,92,246,0.15)]';
-                                            else $cardGlow = 'hover:border-indigo-500/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)]';
+                                            if ($item->status == 'upload')
+                                                $cardGlow = 'hover:border-emerald-500/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] glow-emerald';
+                                            elseif ($item->status == 'acc')
+                                                $cardGlow = 'hover:border-blue-500/40 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]';
+                                            elseif ($item->status == 'edit')
+                                                $cardGlow = 'hover:border-amber-500/40 hover:shadow-[0_0_15px_rgba(245,158,11,0.15)]';
+                                            elseif ($item->status == 'take')
+                                                $cardGlow = 'hover:border-violet-500/40 hover:shadow-[0_0_15px_rgba(139,92,246,0.15)]';
+                                            else
+                                                $cardGlow = 'hover:border-indigo-500/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)]';
                                         @endphp
 
                                         <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 transition-all duration-300 cursor-pointer group {{ $cardGlow }} relative overflow-hidden"
@@ -146,40 +194,60 @@
                                             data-pilar="{{ $item->pilar_konten }}" data-script="{{ $item->script_video }}"
                                             data-caption="{{ $item->caption }}" data-linkref="{{ $item->link_referensi }}"
                                             data-linkdrive="{{ $item->link_gdrive }}">
-                                            
+
                                             <!-- Ribbon Hari -->
-                                            <div class="absolute top-0 left-0 w-1 h-full bg-slate-700 group-hover:bg-indigo-500 transition-colors"></div>
+                                            <div
+                                                class="absolute top-0 left-0 w-1 h-full bg-slate-700 group-hover:bg-indigo-500 transition-colors">
+                                            </div>
 
                                             <div class="flex justify-between items-center mb-3">
-                                                <span class="font-bold text-slate-300 text-sm tracking-wide">{{ $item->hari }}</span>
-                                                
-                                                <form action="{{ route('update.status', $item->id) }}" method="POST" onclick="event.stopPropagation()">
+                                                <div class="flex flex-col">
+                                                    <span
+                                                        class="font-bold text-slate-300 text-sm tracking-wide">{{ $item->hari }}</span>
+                                                    @if($item->tanggal)
+                                                        <span class="text-[10px] text-slate-500 tracking-wider">
+                                                            {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}
+                                                        </span>
+                                                    @endif
+                                                </div>
+
+                                                <form action="{{ route('update.status', $item->id) }}" method="POST"
+                                                    onclick="event.stopPropagation()">
                                                     @csrf @method('PUT')
                                                     <select name="status" onchange="this.form.submit()"
                                                         class="text-[10px] sm:text-xs px-2 py-1 rounded-md font-bold cursor-pointer outline-none border {{ $selectColor }} appearance-none text-center">
-                                                        <option value="kosong" {{ $item->status == 'kosong' ? 'selected' : '' }}>⏳ KOSONG</option>
-                                                        <option value="take" {{ $item->status == 'take' ? 'selected' : '' }}>🎥 TAKE</option>
-                                                        <option value="edit" {{ $item->status == 'edit' ? 'selected' : '' }}>✂️ EDIT</option>
-                                                        <option value="acc" {{ $item->status == 'acc' ? 'selected' : '' }}>⭐ ACC</option>
-                                                        <option value="upload" {{ $item->status == 'upload' ? 'selected' : '' }}>🚀 UPLOAD</option>
+                                                        <option value="kosong" {{ $item->status == 'kosong' ? 'selected' : '' }}>⏳
+                                                            KOSONG</option>
+                                                        <option value="take" {{ $item->status == 'take' ? 'selected' : '' }}>🎥 TAKE
+                                                        </option>
+                                                        <option value="edit" {{ $item->status == 'edit' ? 'selected' : '' }}>✂️ EDIT
+                                                        </option>
+                                                        <option value="acc" {{ $item->status == 'acc' ? 'selected' : '' }}>⭐ ACC
+                                                        </option>
+                                                        <option value="upload" {{ $item->status == 'upload' ? 'selected' : '' }}>🚀
+                                                            UPLOAD</option>
                                                     </select>
                                                 </form>
                                             </div>
-                                            
+
                                             <div class="bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/80">
                                                 <p class="text-xs sm:text-sm text-slate-300 font-medium truncate">
                                                     <span class="text-indigo-400 mr-1 font-bold">#</span>{{ $item->pilar_konten }}
                                                 </p>
                                             </div>
-                                            
-                                            <div class="mt-3 flex justify-between items-center opacity-70 group-hover:opacity-100 transition-opacity">
+
+                                            <div
+                                                class="mt-3 flex justify-between items-center opacity-70 group-hover:opacity-100 transition-opacity">
                                                 <div class="flex gap-2">
                                                     @if($item->script_video)<span title="Script" class="text-xs">📝</span>@endif
                                                     @if($item->caption)<span title="Caption" class="text-xs">💬</span>@endif
-                                                    @if($item->link_referensi)<span title="Referensi" class="text-xs">🔗</span>@endif
+                                                    @if($item->link_referensi)<span title="Referensi"
+                                                    class="text-xs">🔗</span>@endif
                                                     @if($item->link_gdrive)<span title="Drive" class="text-xs">📁</span>@endif
                                                 </div>
-                                                <span class="text-[10px] text-fuchsia-400 font-bold bg-fuchsia-500/10 px-2 py-1 rounded-md border border-fuchsia-500/20">Edit Detail ↗</span>
+                                                <span
+                                                    class="text-[10px] text-fuchsia-400 font-bold bg-fuchsia-500/10 px-2 py-1 rounded-md border border-fuchsia-500/20">Edit
+                                                    Detail ↗</span>
                                             </div>
                                         </div>
                                     @endforeach
@@ -191,24 +259,29 @@
 
                 </div>
             @empty
-                <div class="col-span-full text-center py-20 bg-slate-800/30 backdrop-blur-sm rounded-3xl border border-dashed border-slate-700/50">
-                    <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                <div
+                    class="col-span-full text-center py-20 bg-slate-800/30 backdrop-blur-sm rounded-3xl border border-dashed border-slate-700/50">
+                    <div
+                        class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
                         <span class="text-4xl text-slate-500">✨</span>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2">Space masih kosong!</h3>
                     <p class="text-slate-400 text-sm mb-6">Belum target / jadwal sama sekali.</p>
-                    <a href="{{ route('jadwal.create') }}" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-bold transition shadow-[0_0_20px_rgba(79,70,229,0.2)]">
+                    <button onclick="showCreateModal()"
+                        class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-bold transition shadow-[0_0_20px_rgba(79,70,229,0.2)]">
                         + Tambah Target Baru
-                    </a>
+                    </button>
                 </div>
             @endforelse
         </div>
 
         <!-- Footer Danger Zone -->
         <div class="mt-8 text-center pb-8">
-            <form action="{{ route('jadwal.delete_all') }}" method="POST" onsubmit="return confirm('HATI-HATI! Yakin hapus SEMUA data secara permanen?')">
+            <form action="{{ route('jadwal.delete_all') }}" method="POST"
+                onsubmit="return confirm('HATI-HATI! Yakin hapus SEMUA data secara permanen?')">
                 @csrf @method('DELETE')
-                <button type="submit" class="text-slate-500 hover:text-red-400 text-xs font-bold transition-colors border border-transparent hover:border-red-500/30 hover:bg-red-500/10 px-4 py-2 rounded-lg">
+                <button type="submit"
+                    class="text-slate-500 hover:text-red-400 text-xs font-bold transition-colors border border-transparent hover:border-red-500/30 hover:bg-red-500/10 px-4 py-2 rounded-lg">
                     ⚠️ Hapus Semua Data & Reset Board
                 </button>
             </form>
@@ -216,18 +289,29 @@
     </div>
 
     <!-- Glass Modal -->
-    <div id="detailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 invisible opacity-0 transition-all duration-300 flex items-center justify-center p-4">
-        <div class="bg-slate-900 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-slate-700 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative transform scale-95 transition-transform duration-300" id="modalContent">
+    <x-create-modal />
 
-            <div class="sticky top-0 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-5 sm:p-6 flex justify-between items-center z-10">
+    <div id="detailModal"
+        class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 invisible opacity-0 transition-all duration-300 flex items-center justify-center p-4">
+        <div class="bg-slate-900 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-slate-700 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative transform scale-95 transition-transform duration-300"
+            id="modalContent">
+
+            <div
+                class="sticky top-0 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 p-5 sm:p-6 flex justify-between items-center z-10">
                 <div>
                     <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
-                        <span id="modalKlien" class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400"></span>
+                        <span id="modalKlien"
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400"></span>
                     </h2>
-                    <p class="text-slate-400 text-sm font-medium mt-1">Pilar: <span id="modalPilar" class="text-slate-300 font-bold"></span></p>
+                    <p class="text-slate-400 text-sm font-medium mt-1">Pilar: <span id="modalPilar"
+                            class="text-slate-300 font-bold"></span></p>
                 </div>
-                <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button onclick="closeModal()"
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
                 </button>
             </div>
 
@@ -236,14 +320,16 @@
                     @csrf @method('PUT')
 
                     <div class="group">
-                        <label class="block text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">📝 Script Video / Voice Over</label>
+                        <label class="block text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">📝 Script
+                            Video / Voice Over</label>
                         <textarea id="modalScript" name="script_video" rows="4"
                             class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder-slate-600 resize-none"
                             placeholder="Ketik script di sini..."></textarea>
                     </div>
 
                     <div class="group">
-                        <label class="block text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-2">#️⃣ Caption & Hashtag</label>
+                        <label class="block text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-2">#️⃣
+                            Caption & Hashtag</label>
                         <textarea id="modalCaption" name="caption" rows="3"
                             class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-all placeholder-slate-600 resize-none"
                             placeholder="Tulis caption dan hashtag di sini..."></textarea>
@@ -251,13 +337,15 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">🔗 Link Tiktok/Reels</label>
+                            <label class="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">🔗 Link
+                                Tiktok/Reels</label>
                             <input type="url" id="modalLinkRef" name="link_referensi"
                                 class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all placeholder-slate-600"
                                 placeholder="https://...">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">📁 Link GDrive</label>
+                            <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">📁
+                                Link GDrive</label>
                             <input type="url" id="modalLinkDrive" name="link_gdrive"
                                 class="w-full bg-slate-800/50 text-slate-200 border border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-slate-600"
                                 placeholder="https://drive.google.com/...">
@@ -268,19 +356,31 @@
                         <button type="button" onclick="closeModal()"
                             class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition">Batal</button>
                         <button type="submit"
-                            class="px-8 py-2.5 bg-gradient-to-r from-indigo-600 to-fuchsia-600 hover:from-indigo-500 hover:to-fuchsia-500 text-white rounded-xl font-bold shadow-[0_0_20px_rgba(99,102,241,0.3)] transition transform hover:scale-105">Simpan Data</button>
+                            class="px-8 py-2.5 bg-gradient-to-r from-indigo-600 to-fuchsia-600 hover:from-indigo-500 hover:to-fuchsia-500 text-white rounded-xl font-bold shadow-[0_0_20px_rgba(99,102,241,0.3)] transition transform hover:scale-105">Simpan
+                            Data</button>
                     </div>
                 </form>
 
                 <div class="mt-8 relative">
-                    <div class="absolute inset-0 flex items-center" aria-hidden="true"><div class="w-full border-t border-red-900/30"></div></div>
-                    <div class="relative flex justify-center"><span class="px-3 bg-slate-900 text-xs text-red-500/50 font-bold uppercase">Danger Zone</span></div>
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="w-full border-t border-red-900/30"></div>
+                    </div>
+                    <div class="relative flex justify-center"><span
+                            class="px-3 bg-slate-900 text-xs text-red-500/50 font-bold uppercase">Danger Zone</span>
+                    </div>
                 </div>
 
-                <form id="formHapus" method="POST" class="mt-6 flex justify-center" onsubmit="return confirm('Yakin ingin menghapus jadwal ini? Data hilang permanen.')">
+                <form id="formHapus" method="POST" class="mt-6 flex justify-center"
+                    onsubmit="return confirm('Yakin ingin menghapus jadwal ini? Data hilang permanen.')">
                     @csrf @method('DELETE')
-                    <button type="submit" class="group flex items-center gap-2 text-red-400 hover:text-white hover:bg-red-600 border border-red-900/50 hover:border-red-600 px-5 py-2 rounded-xl text-sm font-bold transition-all">
-                        <svg class="w-4 h-4 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    <button type="submit"
+                        class="group flex items-center gap-2 text-red-400 hover:text-white hover:bg-red-600 border border-red-900/50 hover:border-red-600 px-5 py-2 rounded-xl text-sm font-bold transition-all">
+                        <svg class="w-4 h-4 group-hover:animate-bounce" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
                         Hapus Jadwal Ini
                     </button>
                 </form>
@@ -290,52 +390,61 @@
     </div>
 
     <script>
-        function copyLaporan() {
-            let laporan = "*LAPORAN QC CREATIVE* :\n\n";
-            document.querySelectorAll('.glass-card').forEach(col => {
-                let klienEl = col.querySelector('h2.tracking-wide');
-                if (!klienEl) return;
-                
-                let klien = klienEl.innerText.replace('🚀', '').trim();
-                let weeks = col.querySelectorAll('.bg-slate-900\\/50');
-                if(weeks.length === 0) return;
+        // Session messages toast
+        @if(session('success'))
+            alert("{{ session('success') }}");
+        @endif
 
-                laporan += `*${klien}* :\n`;
+        @if(session('error'))
+            alert("{{ session('error') }}");
+        @endif
 
-                weeks.forEach(week => {
-                    let mingguEl = week.querySelector('.text-fuchsia-400');
-                    if (!mingguEl) return;
-                    let minggu = mingguEl.innerText.trim();
-                    laporan += `  _${minggu}_\n`;
+            function copyLaporan() {
+                let laporan = "*LAPORAN QC CREATIVE* :\n\n";
+                document.querySelectorAll('.glass-card').forEach(col => {
+                    let klienEl = col.querySelector('h2.tracking-wide');
+                    if (!klienEl) return;
 
-                    let cards = week.querySelectorAll('.group');
-                    cards.forEach(card => {
-                        let hariEl = card.querySelector('.font-bold.text-slate-300');
-                        let pilarEl = card.querySelector('p.truncate');
-                        if(!hariEl || !pilarEl) return;
-                        
-                        let hari = hariEl.innerText.trim();
-                        let pilar = pilarEl.innerText.replace('#', '').trim();
-                        let val = card.querySelector('select').value;
+                    let klien = klienEl.innerText.replace('🚀', '').trim();
+                    let weeks = col.querySelectorAll('.bg-slate-900\\/50');
+                    if (weeks.length === 0) return;
 
-                        let emoji = "⏳";
-                        if (val == 'upload') emoji = "🚀";
-                        else if (val == 'acc') emoji = "⭐";
-                        else if (val == 'edit') emoji = "✂️";
-                        else if (val == 'take') emoji = "🎥";
+                    laporan += `*${klien}* :\n`;
 
-                        laporan += `    - ${hari} : ${pilar} ${emoji}\n`;
+                    weeks.forEach(week => {
+                        let mingguEl = week.querySelector('.text-fuchsia-400');
+                        if (!mingguEl) return;
+                        let minggu = mingguEl.innerText.trim();
+                        laporan += `  _${minggu}_\n`;
+
+                        let cards = week.querySelectorAll('.group');
+                        cards.forEach(card => {
+                            let hariEl = card.querySelector('.font-bold.text-slate-300');
+                            let pilarEl = card.querySelector('p.truncate');
+                            if (!hariEl || !pilarEl) return;
+
+                            let hari = hariEl.innerText.trim();
+                            let pilar = pilarEl.innerText.replace('#', '').trim();
+                            let val = card.querySelector('select').value;
+
+                            let emoji = "⏳";
+                            if (val == 'upload') emoji = "🚀";
+                            else if (val == 'acc') emoji = "⭐";
+                            else if (val == 'edit') emoji = "✂️";
+                            else if (val == 'take') emoji = "🎥";
+
+                            laporan += `    - ${hari} : ${pilar} ${emoji}\n`;
+                        });
+                        laporan += `\n`;
                     });
-                    laporan += `\n`;
                 });
-            });
 
-            navigator.clipboard.writeText(laporan.trim()).then(() => {
-                alert("Laporan berhasil disalin! Silakan paste di WA.");
-            }).catch(() => {
-                alert("Gagal menyalin, silakan coba lagi.");
-            });
-        }
+                navigator.clipboard.writeText(laporan.trim()).then(() => {
+                    alert("Laporan berhasil disalin! Silakan paste di WA.");
+                }).catch(() => {
+                    alert("Gagal menyalin, silakan coba lagi.");
+                });
+            }
 
         function showModal() {
             const modal = document.getElementById('detailModal');
@@ -382,4 +491,5 @@
         }
     </script>
 </body>
+
 </html>
